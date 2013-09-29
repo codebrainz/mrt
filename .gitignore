@@ -1,0 +1,4 @@
+/misc/
+/tests/test_seq
+*.o
+/mrt/libmrt.so
