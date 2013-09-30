@@ -1,17 +1,17 @@
-#ifndef MRT_NUMBER_H
-#define MRT_NUMBER_H
+#ifndef M_NUMBER_H
+#define M_NUMBER_H
 
 #include <mrt/object.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_NUMBER(v) ((MRT_Number*)(v))
-#define MRT_IS_NUMBER(v) mrt_object_is_instance(mrt_number_class(), MRT_OBJECT(v))
+#define M_NUMBER(v) ((MNumber*)(v))
+#define M_IS_NUMBER(v) m_object_is_instance(m_number_class(), M_OBJECT(v))
 
-typedef struct MRT_Number MRT_Number;
+typedef struct MNumber MNumber;
 
-const MRT_ObjectClass *mrt_number_class(void);
+const MObjectClass *m_number_class(void);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_NUMBER_H
+#endif // M_NUMBER_H

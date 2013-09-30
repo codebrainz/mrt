@@ -1,27 +1,27 @@
-#ifndef MRT_STRING_IMPL_H
-#define MRT_STRING_IMPL_H
+#ifndef M_STRING_IMPL_H
+#define M_STRING_IMPL_H
 
 #include <mrt/string.h>
 #include <mrt/sequence-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_STRING_CLASS(c) ((MRT_StringClass*)(c))
+#define M_STRING_CLASS(c) ((MStringClass*)(c))
 
-typedef struct MRT_StringClass MRT_StringClass;
+typedef struct MStringClass MStringClass;
 
-struct MRT_String
+struct MString
 {
-  MRT_Seq base_;
+  MSeq base_;
   uint32_t *str;
   uint32_t len;
 };
 
-struct MRT_StringClass
+struct MStringClass
 {
-  MRT_SeqClass base_;
+  MSeqClass base_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_STRIN_IMPL_H
+#endif // M_STRIN_IMPL_H

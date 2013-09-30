@@ -6,21 +6,21 @@
 // FIXME:
 #include <iconv.h>
 
-char *mrt_strdup(const char *s)
+char *m_strdup(const char *s)
 {
   if (!s)
     return NULL;
-  return mrt_strndup(s, mrt_strlen(s));
+  return m_strndup(s, m_strlen(s));
 }
 
-char *mrt_strndup(const char *s, size_t len)
+char *m_strndup(const char *s, size_t len)
 {
   char *buf;
 
   if (!s)
     return NULL;
 
-  buf = mrt_malloc(len + 1);
+  buf = m_malloc(len + 1);
   if (!buf)
     return NULL;
 
@@ -30,26 +30,26 @@ char *mrt_strndup(const char *s, size_t len)
   return buf;
 }
 
-char *mrt_strdup_printf(const char *fmt, ...)
+char *m_strdup_printf(const char *fmt, ...)
 {
   char *buf;
   va_list ap;
   if (!fmt)
     return NULL;
   va_start(ap, fmt);
-  buf = mrt_strdup_vprintf(fmt, ap);
+  buf = m_strdup_vprintf(fmt, ap);
   va_end(ap);
   return buf;
 }
 
 // Taken from vsnprintf(3) man page on Ubuntu/Debian
-char *mrt_strdup_vprintf(const char *fmt, va_list ap_in)
+char *m_strdup_vprintf(const char *fmt, va_list ap_in)
 {
   int n, size = 100; // Guess
   char *p, *np;
   va_list ap;
 
-  if ((p = mrt_malloc(size)) == NULL)
+  if ((p = m_malloc(size)) == NULL)
     return NULL;
 
   while (true) {
@@ -65,8 +65,8 @@ char *mrt_strdup_vprintf(const char *fmt, va_list ap_in)
     else
       size *= 2;
 
-    if ((np = mrt_realloc(p, size)) == NULL) {
-      mrt_free(p);
+    if ((np = m_realloc(p, size)) == NULL) {
+      m_free(p);
       return NULL;
     } else {
       p = np;
@@ -76,14 +76,14 @@ char *mrt_strdup_vprintf(const char *fmt, va_list ap_in)
   return NULL;
 }
 
-size_t mrt_strlen(const char *str)
+size_t m_strlen(const char *str)
 {
   if (!str || !str[0])
     return 0;
   return strlen(str);
 }
 
-int mrt_strcmp(const char *str1, const char *str2)
+int m_strcmp(const char *str1, const char *str2)
 {
   if (!str1 && !str2)
     return 0;

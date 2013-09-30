@@ -25,26 +25,26 @@
 #include <mrt/sequence-iter-impl.h>
 #include <mrt/memory.h>
 
-MRT_Seq *seq_iter_get_seq(MRT_SeqIter *seq_iter)
+MSeq *seq_iter_get_seq(MSeqIter *seq_iter)
 {
-  mrt_return_val_if_fail(seq_iter, NULL);
+  m_return_val_if_fail(seq_iter, NULL);
   return seq_iter->seq;
 }
 
-MRT_Object *seq_iter_prev(MRT_SeqIter *seq_iter)
+MObject *seq_iter_prev(MSeqIter *seq_iter)
 {
-  mrt_return_val_if_fail(seq_iter, NULL);
-  if (MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->prev)
-    return MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->prev(seq_iter);
+  m_return_val_if_fail(seq_iter, NULL);
+  if (M_SEQ_ITER_CLASS(M_OBJECT(seq_iter)->class_)->prev)
+    return M_SEQ_ITER_CLASS(M_OBJECT(seq_iter)->class_)->prev(seq_iter);
   return NULL;
 }
 
-MRT_Object *seq_iter_next(MRT_SeqIter *seq_iter)
+MObject *seq_iter_next(MSeqIter *seq_iter)
 {
-  mrt_return_val_if_fail(seq_iter, NULL);
-  if (MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->next)
-    return MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->next(seq_iter);
+  m_return_val_if_fail(seq_iter, NULL);
+  if (M_SEQ_ITER_CLASS(M_OBJECT(seq_iter)->class_)->next)
+    return M_SEQ_ITER_CLASS(M_OBJECT(seq_iter)->class_)->next(seq_iter);
   return NULL;
 }
 
-MRT_ABSTRACT_CLASS_DEF(MRT_SeqIter, seq_iter, mrt_object_class())
+M_ABSTRACT_CLASS_DEF(MSeqIter, seq_iter, m_object_class())

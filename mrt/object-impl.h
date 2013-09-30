@@ -22,92 +22,92 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_OBJECT_IMPL_H
-#define MRT_OBJECT_IMPL_H
+#ifndef M_OBJECT_IMPL_H
+#define M_OBJECT_IMPL_H
 
 #include <mrt/object.h>
 #include <mrt/memory.h>
 #include <stdarg.h>
 #include <string.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-enum MRT_ObjectFlags
+enum MObjectFlags
 {
-  MRT_OBJECT_FLAG_NONE      = (1<<0),
-  MRT_OBJECT_FLAG_FLOATING  = (1<<1),
-  MRT_OBJECT_FLAG_ALLOCATED = (1<<2),
+  M_OBJECT_FLAG_NONE      = (1<<0),
+  M_OBJECT_FLAG_FLOATING  = (1<<1),
+  M_OBJECT_FLAG_ALLOCATED = (1<<2),
 };
 
-struct MRT_Object
+struct MObject
 {
-  const MRT_ObjectClass *class_;
+  const MObjectClass *class_;
   uint32_t flags;
   uint32_t ref_count;
 };
 
-typedef void (*MRT_ObjectConstructFunc)(MRT_Object*, va_list);
-typedef void (*MRT_ObjectDestructFunc)(MRT_Object*);
-typedef MRT_Object (*MRT_ObjectCopyFunc)(const MRT_Object*);
-typedef size_t (*MRT_ObjectHashFunc)(const MRT_Object*);
-typedef int (*MRT_ObjectCompareFunc)(const MRT_Object*, const MRT_Object*);
-typedef bool (*MRT_ObjectEqualFunc)(const MRT_Object*, const MRT_Object*);
+typedef void (*MObjectConstructFunc)(MObject*, va_list);
+typedef void (*MObjectDestructFunc)(MObject*);
+typedef MObject (*MObjectCopyFunc)(const MObject*);
+typedef size_t (*MObjectHashFunc)(const MObject*);
+typedef int (*MObjectCompareFunc)(const MObject*, const MObject*);
+typedef bool (*MObjectEqualFunc)(const MObject*, const MObject*);
 
-enum MRT_ObjectClassFlags
+enum MObjectClassFlags
 {
-  MRT_OBJECT_CLASS_FLAG_NONE     = (1<<0),
+  M_OBJECT_CLASS_FLAG_NONE     = (1<<0),
 };
 
-struct MRT_ObjectClass
+struct MObjectClass
 {
-  const struct MRT_ObjectClass *super;
+  const struct MObjectClass *super;
   uint32_t type_id;
   uint32_t size;
   uint32_t flags;
   const char *name;
-  MRT_ObjectConstructFunc ctor;
-  MRT_ObjectDestructFunc dtor;
-  MRT_ObjectCopyFunc copy;
-  MRT_ObjectHashFunc hash;
-  MRT_ObjectCompareFunc compare;
-  MRT_ObjectEqualFunc equal;
+  MObjectConstructFunc ctor;
+  MObjectDestructFunc dtor;
+  MObjectCopyFunc copy;
+  MObjectHashFunc hash;
+  MObjectCompareFunc compare;
+  MObjectEqualFunc equal;
 };
 
-MRT_Object *mrt_object_construct(const MRT_ObjectClass *class_ptr,
-  MRT_Object *obj_ptr, ...);
+MObject *m_object_construct(const MObjectClass *class_ptr,
+  MObject *obj_ptr, ...);
 
-const MRT_ObjectClass *mrt_object_class_register(const MRT_ObjectClass *class_ptr);
+const MObjectClass *m_object_class_register(const MObjectClass *class_ptr);
 
-#define MRT_BEGIN_CLASS_DEF(T, name_, super_)            \
-const MRT_ObjectClass * mrt_ ## name_ ## _class (void)   \
+#define M_BEGIN_CLASS_DEF(T, name_, super_)            \
+const MObjectClass * m_ ## name_ ## _class (void)   \
 {                                                        \
   static bool class_initialized_ = false;                \
   static T ## Class obj_class_;                        \
   if (!class_initialized_) {                             \
     memset(&obj_class_, 0, sizeof(T ## Class));        \
-    MRT_OBJECT_CLASS(&obj_class_)->super = super_ ;    \
-    MRT_OBJECT_CLASS(&obj_class_)->size = sizeof( T ); \
-    MRT_OBJECT_CLASS(&obj_class_)->name = #T;          \
+    M_OBJECT_CLASS(&obj_class_)->super = super_ ;    \
+    M_OBJECT_CLASS(&obj_class_)->size = sizeof( T ); \
+    M_OBJECT_CLASS(&obj_class_)->name = #T;          \
     class_initialized_ = true;                           \
   }                                                      \
   do
 
-#define MRT_SET_FIELD(clsT_, memb_, fn_ptr_)         \
+#define M_SET_FIELD(clsT_, memb_, fn_ptr_)         \
   do {                                               \
     clsT_ *cls_temp_ptr__ = (clsT_ *) &obj_class_; \
     cls_temp_ptr__->memb_ = fn_ptr_ ;                \
   } while (0)
 
-#define MRT_END_CLASS_DEF                 \
+#define M_END_CLASS_DEF                 \
   while (0);                              \
-  return MRT_OBJECT_CLASS(&obj_class_); \
+  return M_OBJECT_CLASS(&obj_class_); \
 }
 
-#define MRT_ABSTRACT_CLASS_DEF(T, name_, super_)       \
-const MRT_ObjectClass * mrt_ ## name_ ## _class (void) \
+#define M_ABSTRACT_CLASS_DEF(T, name_, super_)       \
+const MObjectClass * m_ ## name_ ## _class (void) \
 {                                                      \
   static bool class_initialized_ = false;              \
-  static MRT_ObjectClass obj_class_;                 \
+  static MObjectClass obj_class_;                 \
   if (!class_initialized_) {                           \
     memset(&obj_class_, 0, sizeof(T ## Class));      \
     obj_class_.super = super_ ;                      \
@@ -118,6 +118,6 @@ const MRT_ObjectClass * mrt_ ## name_ ## _class (void) \
   return &obj_class_ ;                               \
 }
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_OBJECT_IMPL_H
+#endif // M_OBJECT_IMPL_H

@@ -22,33 +22,33 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_LIST_IMPL_H
-#define MRT_LIST_IMPL_H
+#ifndef M_LIST_IMPL_H
+#define M_LIST_IMPL_H
 
 #include <mrt/list.h>
 #include <mrt/sequence-impl.h>
 #include <mrt/sequence-iter-impl.h>
 #include <mrt/list-link-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_LIST_CLASS(c) ((MRT_ListClass*)(c))
+#define M_LIST_CLASS(c) ((MListClass*)(c))
 
-typedef struct MRT_ListClass MRT_ListClass;
+typedef struct MListClass MListClass;
 
-struct MRT_List
+struct MList
 {
-  MRT_Seq base_;
+  MSeq base_;
   uint32_t size;
-  MRT_ListLink *head;
-  MRT_ListLink *tail;
+  MListLink *head;
+  MListLink *tail;
 };
 
-struct MRT_ListClass
+struct MListClass
 {
-  MRT_SeqClass base_;
+  MSeqClass base_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_LIST_IMPL_H
+#endif // M_LIST_IMPL_H

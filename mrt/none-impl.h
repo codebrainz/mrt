@@ -1,25 +1,25 @@
-#ifndef MRT_NONE_IMPL_H
-#define MRT_NONE_IMPL_H
+#ifndef M_NONE_IMPL_H
+#define M_NONE_IMPL_H
 
 #include <mrt/none.h>
 #include <mrt/object-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_NONE_CLASS(c) ((MRT_NoneClass*)(v))
+#define M_NONE_CLASS(c) ((MNoneClass*)(v))
 
-typedef struct MRT_NoneClass MRT_NoneClass;
+typedef struct MNoneClass MNoneClass;
 
-struct MRT_None
+struct MNone
 {
-  MRT_Object base_;
+  MObject base_;
 };
 
-struct MRT_NoneClass
+struct MNoneClass
 {
-  MRT_ObjectClass base_;
+  MObjectClass base_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_NONE_IMPL_H
+#endif // M_NONE_IMPL_H

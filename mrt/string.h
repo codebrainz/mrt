@@ -1,23 +1,23 @@
-#ifndef MRT_STRING_H
-#define MRT_STRING_H
+#ifndef M_STRING_H
+#define M_STRING_H
 
 #include <mrt/sequence.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_STRING(v) ((MRT_String*)(v))
-#define MRT_IS_STRING(v) mrt_object_is_instance(mrt_string_class(), MRT_OBJECT(v))
+#define M_STRING(v) ((MString*)(v))
+#define M_IS_STRING(v) m_object_is_instance(m_string_class(), M_OBJECT(v))
 
-typedef struct MRT_String MRT_String;
+typedef struct MString MString;
 
-const MRT_ObjectClass *mrt_string_class(void);
+const MObjectClass *m_string_class(void);
 
-MRT_Object *mrt_string_new(void);
+MObject *m_string_new(void);
 
-char *mrt_string_to_utf8(MRT_String *str);
-void mrt_string_assign_utf8_length(MRT_String *str, const char *s, size_t len);
-void mrt_string_assign_utf8(MRT_String *str, const char *s);
+char *m_string_to_utf8(MString *str);
+void m_string_assign_utf8_length(MString *str, const char *s, size_t len);
+void m_string_assign_utf8(MString *str, const char *s);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_STRING_H
+#endif // M_STRING_H

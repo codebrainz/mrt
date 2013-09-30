@@ -22,44 +22,44 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_SEQUENCE_IMPL_H
-#define MRT_SEQUENCE_IMPL_H
+#ifndef M_SEQUENCE_IMPL_H
+#define M_SEQUENCE_IMPL_H
 
 #include <mrt/object-impl.h>
 #include <mrt/sequence.h>
 #include <stdarg.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_SEQ_CLASS(c) ((MRT_SeqClass*)(c))
+#define M_SEQ_CLASS(c) ((MSeqClass*)(c))
 
-typedef struct MRT_SeqClass MRT_SeqClass;
+typedef struct MSeqClass MSeqClass;
 
-struct MRT_Seq
+struct MSeq
 {
-  MRT_Object base_;
+  MObject base_;
 };
 
-typedef MRT_Object* (*MRT_SeqGetFunc)(MRT_Seq*, va_list);
-typedef bool (*MRT_SeqSetFunc)(MRT_Seq*, va_list);
-typedef bool (*MRT_SeqAddFunc)(MRT_Seq*, va_list);
-typedef bool (*MRT_SeqDelFunc)(MRT_Seq*, va_list);
-typedef uint32_t (*MRT_SeqSizeFunc)(MRT_Seq*);
-typedef MRT_SeqIter* (*MRT_SeqIterFirst)(MRT_Seq*);
-typedef MRT_SeqIter* (*MRT_SeqIterLast)(MRT_Seq*);
+typedef MObject* (*MSeqGetFunc)(MSeq*, va_list);
+typedef bool (*MSeqSetFunc)(MSeq*, va_list);
+typedef bool (*MSeqAddFunc)(MSeq*, va_list);
+typedef bool (*MSeqDelFunc)(MSeq*, va_list);
+typedef uint32_t (*MSeqSizeFunc)(MSeq*);
+typedef MSeqIter* (*MSeqIterFirst)(MSeq*);
+typedef MSeqIter* (*MSeqIterLast)(MSeq*);
 
-struct MRT_SeqClass
+struct MSeqClass
 {
-  MRT_ObjectClass base_;
-  MRT_SeqGetFunc get;
-  MRT_SeqSetFunc set;
-  MRT_SeqAddFunc add;
-  MRT_SeqDelFunc del;
-  MRT_SeqSizeFunc size;
-  MRT_SeqIterFirst first;
-  MRT_SeqIterLast last;
+  MObjectClass base_;
+  MSeqGetFunc get;
+  MSeqSetFunc set;
+  MSeqAddFunc add;
+  MSeqDelFunc del;
+  MSeqSizeFunc size;
+  MSeqIterFirst first;
+  MSeqIterLast last;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_SEQUENCE_IMPL_H
+#endif // M_SEQUENCE_IMPL_H

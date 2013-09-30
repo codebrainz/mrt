@@ -2,58 +2,58 @@
 #include <mrt/string-impl.h>
 #include <mrt/char.h>
 
-static void mrt_string_iter_ctor(MRT_Object *obj, va_list ap)
+static void m_string_iter_ctor(MObject *obj, va_list ap)
 {
-  MRT_StringIter *iter = MRT_STRING_ITER(obj);
-  MRT_Seq *seq = va_arg(ap, MRT_Seq*);
-  MRT_SEQ_ITER(iter)->seq = MRT_SEQ(mrt_object_ref(MRT_OBJECT(seq)));
+  MStringIter *iter = M_STRING_ITER(obj);
+  MSeq *seq = va_arg(ap, MSeq*);
+  M_SEQ_ITER(iter)->seq = M_SEQ(m_object_ref(M_OBJECT(seq)));
   iter->index = va_arg(ap, long);
 }
 
-static void mrt_string_iter_dtor(MRT_Object *obj)
+static void m_string_iter_dtor(MObject *obj)
 {
-  mrt_object_unref(MRT_OBJECT(MRT_SEQ_ITER(obj)->seq));
-  MRT_STRING_ITER(obj)->index = 0;
+  m_object_unref(M_OBJECT(M_SEQ_ITER(obj)->seq));
+  M_STRING_ITER(obj)->index = 0;
 }
 
-static MRT_Object *mrt_string_iter_prev(MRT_SeqIter *seq_it)
+static MObject *m_string_iter_prev(MSeqIter *seq_it)
 {
-  MRT_StringIter *it = MRT_STRING_ITER(seq_it);
-  MRT_String *str;
-  mrt_return_val_if_fail(MRT_IS_STRING_ITER(it), NULL);
-  str = MRT_STRING(MRT_SEQ_ITER(it)->seq);
+  MStringIter *it = M_STRING_ITER(seq_it);
+  MString *str;
+  m_return_val_if_fail(M_IS_STRING_ITER(it), NULL);
+  str = M_STRING(M_SEQ_ITER(it)->seq);
   if (it->index == 0)
     return NULL;
   it->index--;
-  mrt_return_val_if_fail(MRT_IS_STRING(str), NULL);
-  mrt_return_val_if_fail((size_t)it->index >= str->len, NULL);
-  return mrt_char_new(str->str[it->index]);
+  m_return_val_if_fail(M_IS_STRING(str), NULL);
+  m_return_val_if_fail((size_t)it->index >= str->len, NULL);
+  return m_char_new(str->str[it->index]);
 }
 
-static MRT_Object *mrt_string_iter_next(MRT_SeqIter *seq_it)
+static MObject *m_string_iter_next(MSeqIter *seq_it)
 {
-  MRT_StringIter *it = MRT_STRING_ITER(seq_it);
-  MRT_String *str;
-  mrt_return_val_if_fail(MRT_IS_STRING_ITER(it), NULL);
-  str = MRT_STRING(MRT_SEQ_ITER(it)->seq);
+  MStringIter *it = M_STRING_ITER(seq_it);
+  MString *str;
+  m_return_val_if_fail(M_IS_STRING_ITER(it), NULL);
+  str = M_STRING(M_SEQ_ITER(it)->seq);
   if ((size_t)it->index >= str->len)
     return NULL;
   it->index++;
-  mrt_return_val_if_fail(MRT_IS_STRING(str), NULL);
-  mrt_return_val_if_fail((size_t)it->index >= str->len, NULL);
-  return mrt_char_new(str->str[it->index]);
+  m_return_val_if_fail(M_IS_STRING(str), NULL);
+  m_return_val_if_fail((size_t)it->index >= str->len, NULL);
+  return m_char_new(str->str[it->index]);
 }
 
-MRT_SeqIter *mrt_string_iter_new(MRT_String *str, long index)
+MSeqIter *m_string_iter_new(MString *str, long index)
 {
-  return MRT_SEQ_ITER(mrt_object_construct(mrt_string_iter_class(), NULL, str, index));
+  return M_SEQ_ITER(m_object_construct(m_string_iter_class(), NULL, str, index));
 }
 
-MRT_BEGIN_CLASS_DEF(MRT_StringIter, string_iter, mrt_seq_iter_class())
+M_BEGIN_CLASS_DEF(MStringIter, string_iter, m_seq_iter_class())
 {
-  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_string_iter_ctor);
-  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_string_iter_dtor);
-  MRT_SET_FIELD(MRT_SeqIterClass, prev, mrt_string_iter_prev);
-  MRT_SET_FIELD(MRT_SeqIterClass, next, mrt_string_iter_next);
+  M_SET_FIELD(MObjectClass, ctor, m_string_iter_ctor);
+  M_SET_FIELD(MObjectClass, dtor, m_string_iter_dtor);
+  M_SET_FIELD(MSeqIterClass, prev, m_string_iter_prev);
+  M_SET_FIELD(MSeqIterClass, next, m_string_iter_next);
 }
-MRT_END_CLASS_DEF
+M_END_CLASS_DEF

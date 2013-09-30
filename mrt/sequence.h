@@ -22,29 +22,29 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_SEQUENCE_H
-#define MRT_SEQUENCE_H
+#ifndef M_SEQUENCE_H
+#define M_SEQUENCE_H
 
 #include <mrt/object.h>
 #include <mrt/sequence-iter.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_SEQ(v) ((MRT_Seq*)(v))
-#define MRT_IS_SEQ(v) mrt_object_is_instance(mrt_seq_class(), MRT_OBJECT(v))
+#define M_SEQ(v) ((MSeq*)(v))
+#define M_IS_SEQ(v) m_object_is_instance(m_seq_class(), M_OBJECT(v))
 
-typedef struct MRT_Seq MRT_Seq;
+typedef struct MSeq MSeq;
 
-const MRT_ObjectClass *mrt_seq_class(void);
+const MObjectClass *m_seq_class(void);
 
-MRT_Object *mrt_seq_get(MRT_Seq*, ...);
-bool mrt_seq_set(MRT_Seq*, ...);
-bool mrt_seq_add(MRT_Seq*, ...);
-bool mrt_seq_del(MRT_Seq*, ...);
-uint32_t mrt_seq_size(MRT_Seq*);
-struct MRT_SeqIter *mrt_seq_first(MRT_Seq*);
-struct MRT_SeqIter *mrt_seq_last(MRT_Seq*);
+MObject *m_seq_get(MSeq*, ...);
+bool m_seq_set(MSeq*, ...);
+bool m_seq_add(MSeq*, ...);
+bool m_seq_del(MSeq*, ...);
+uint32_t m_seq_size(MSeq*);
+struct MSeqIter *m_seq_first(MSeq*);
+struct MSeqIter *m_seq_last(MSeq*);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_SEQUENCE_H
+#endif // M_SEQUENCE_H

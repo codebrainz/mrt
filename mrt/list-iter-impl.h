@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_LIST_ITER_IMPL_H
-#define MRT_LIST_ITER_IMPL_H
+#ifndef M_LIST_ITER_IMPL_H
+#define M_LIST_ITER_IMPL_H
 
 #include <mrt/object-impl.h>
 #include <mrt/sequence-iter-impl.h>
@@ -31,25 +31,25 @@
 #include <mrt/list-link-impl.h>
 #include <mrt/list.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_LIST_ITER_CLASS(c) ((MRT_ListIterClass*)(c))
+#define M_LIST_ITER_CLASS(c) ((MListIterClass*)(c))
 
-typedef struct MRT_ListIterClass MRT_ListIterClass;
+typedef struct MListIterClass MListIterClass;
 
-struct MRT_ListIter
+struct MListIter
 {
-  MRT_SeqIter base_;
-  MRT_ListLink *link;
+  MSeqIter base_;
+  MListLink *link;
 };
 
-struct MRT_ListIterClass
+struct MListIterClass
 {
-  MRT_SeqIterClass base_;
+  MSeqIterClass base_;
 };
 
-MRT_ListIter *mrt_list_iter_new(MRT_List *list, MRT_ListLink *link);
+MListIter *m_list_iter_new(MList *list, MListLink *link);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_LIST_ITER_IMPL_H
+#endif // M_LIST_ITER_IMPL_H

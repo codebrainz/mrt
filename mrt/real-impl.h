@@ -1,26 +1,26 @@
-#ifndef MRT_REAL_IMPL_H
-#define MRT_REAL_IMPL_H
+#ifndef M_REAL_IMPL_H
+#define M_REAL_IMPL_H
 
 #include <mrt/real.h>
 #include <mrt/number-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_REAL_CLASS(c) ((MRT_RealClass*)(c))
+#define M_REAL_CLASS(c) ((MRealClass*)(c))
 
-typedef struct MRT_RealClass MRT_RealClass;
+typedef struct MRealClass MRealClass;
 
-struct MRT_Real
+struct MReal
 {
-  MRT_Number base_;
+  MNumber base_;
   double obj;
 };
 
-struct MRT_RealClass
+struct MRealClass
 {
-  MRT_NumberClass base_;
+  MNumberClass base_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_REAL_IMPL_H
+#endif // M_REAL_IMPL_H

@@ -22,34 +22,34 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_OBJECT_H
-#define MRT_OBJECT_H 1
+#ifndef M_OBJECT_H
+#define M_OBJECT_H 1
 
 #include <mrt/macros.h>
 #include <mrt/basictypes.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_OBJECT(v)       ((MRT_Object*)(v))
-#define MRT_OBJECT_CLASS(c) ((MRT_ObjectClass*)(c))
-#define MRT_IS_OBJECT(v) mrt_object_is_instance(mrt_object_class(), MRT_OBJECT(v))
-#define MRT_OBJECT_CLASS_INVALID ((uint32_t)-1)
+#define M_OBJECT(v)       ((MObject*)(v))
+#define M_OBJECT_CLASS(c) ((MObjectClass*)(c))
+#define M_IS_OBJECT(v) m_object_is_instance(m_object_class(), M_OBJECT(v))
+#define M_OBJECT_CLASS_INVALID ((uint32_t)-1)
 
-typedef struct MRT_Object MRT_Object;
-typedef struct MRT_ObjectClass MRT_ObjectClass;
+typedef struct MObject MObject;
+typedef struct MObjectClass MObjectClass;
 
-const MRT_ObjectClass *mrt_object_class(void);
+const MObjectClass *m_object_class(void);
 
-MRT_Object *mrt_object_ref(MRT_Object *obj);
-MRT_Object *mrt_object_ref_sync(MRT_Object *obj);
-MRT_Object *mrt_object_unref(MRT_Object *obj);
-MRT_Object *mrt_object_copy(const MRT_Object *obj);
-size_t mrt_object_hash(const MRT_Object *obj);
-int mrt_object_compare(const MRT_Object *obj1, const MRT_Object *obj2);
-bool mrt_object_equal(const MRT_Object *obj1, const MRT_Object *obj2);
+MObject *m_object_ref(MObject *obj);
+MObject *m_object_ref_sync(MObject *obj);
+MObject *m_object_unref(MObject *obj);
+MObject *m_object_copy(const MObject *obj);
+size_t m_object_hash(const MObject *obj);
+int m_object_compare(const MObject *obj1, const MObject *obj2);
+bool m_object_equal(const MObject *obj1, const MObject *obj2);
 
-bool mrt_object_is_instance(const MRT_ObjectClass *class_, const MRT_Object *obj);
+bool m_object_is_instance(const MObjectClass *class_, const MObject *obj);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_OBJECT_H
+#endif // M_OBJECT_H

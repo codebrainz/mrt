@@ -33,17 +33,17 @@
  *
  * @note Unless you're interfacing with other libraries that require
  * standard C strings (ie. character arrays, zero-terminated), you
- * are recommended to use the `MRT_String` APIs.
+ * are recommended to use the `MString` APIs.
  */
 
-#ifndef MRT_STR_UTILS_H
-#define MRT_STR_UTILS_H
+#ifndef M_STR_UTILS_H
+#define M_STR_UTILS_H
 
 #include <mrt/macros.h>
 #include <mrt/basictypes.h>
 #include <stdarg.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
 /**
  * Duplicate a zero-terminated string.
@@ -51,10 +51,10 @@ MRT_BEGIN_CDECLS
  * @param s The zero-terminated string to duplicate.
  * @return A newly allocated zero-terminated string with the same
  * contents as @a s or @c NULL if @a s is @c NULL or no more memory
- * is available. The returned string should be freed with `mrt_free()`
+ * is available. The returned string should be freed with `m_free()`
  * when no longer needed.
  */
-char *mrt_strdup(const char *s);
+char *m_strdup(const char *s);
 
 /**
  * Duplicate the given @a len if a zero-terminated string.
@@ -64,9 +64,9 @@ char *mrt_strdup(const char *s);
  * @return A newly allocated zero-terminated string with the same
  * contents as the first @a len characters of @a s or @c NULL if
  * @a s is @c NULL or no more memory is available. The returned
- * string should be freed with `mrt_free()` when no longer needed.
+ * string should be freed with `m_free()` when no longer needed.
  */
-char *mrt_strndup(const char *s, size_t len);
+char *m_strndup(const char *s, size_t len);
 
 /**
  * Create a new string from the given format and arguments.
@@ -77,7 +77,7 @@ char *mrt_strndup(const char *s, size_t len);
  * given arguments formatted with the given format string. Returns
  * @c NULL if an error occurrs or no more memory is available.
  */
-char *mrt_strdup_printf(const char *fmt, ...);
+char *m_strdup_printf(const char *fmt, ...);
 
 /**
  * Create a new string from the given format and arguments.
@@ -88,7 +88,7 @@ char *mrt_strdup_printf(const char *fmt, ...);
  * given arguments formatted with the given format string. Returns
  * @c NULL if an error occurrs or no more memory is available.
  */
-char *mrt_strdup_vprintf(const char *fmt, va_list ap);
+char *m_strdup_vprintf(const char *fmt, va_list ap);
 
 /**
  * Gets the number of bytes in a given string.
@@ -98,7 +98,7 @@ char *mrt_strdup_vprintf(const char *fmt, va_list ap);
  * zero-terminator byte, or returns 0 if the string is empty or
  * @c NULL is passed in @a str.
  */
-size_t mrt_strlen(const char *str);
+size_t m_strlen(const char *str);
 
 /**
  * Compare the two strings.
@@ -113,18 +113,18 @@ size_t mrt_strlen(const char *str);
  * @return -1, 0, or 1 if @a str1 is less than, equal to, or greater
  * than @a str2, respectively.
  */
-int mrt_strcmp(const char *str1, const char *str2);
+int m_strcmp(const char *str1, const char *str2);
 
 /**
  * Check if the two strings are equal.
  *
- * This is equivalent to `mrt_strcmp(str1, str2) == 0`.
+ * This is equivalent to `m_strcmp(str1, str2) == 0`.
  *
  * @param str1 The first string to compare.
  * @param str2 The second string to compare.
  * @return @c true if the strings are equal @c false otherwise.
  */
-#define mrt_strequal(str1, str2) (mrt_strcmp(str1, str2) == 0)
+#define m_strequal(str1, str2) (m_strcmp(str1, str2) == 0)
 
 /**
  * Remove leading whitespace from the given string.
@@ -133,7 +133,7 @@ int mrt_strcmp(const char *str1, const char *str2);
  * @return The @a str string with leading whitespace removed. The
  * string is modified in place.
  */
-char *mrt_strchomp(char *str);
+char *m_strchomp(char *str);
 
 /**
  * Remove trailing whitespace from the given string.
@@ -142,7 +142,7 @@ char *mrt_strchomp(char *str);
  * @return The @a str string with trailing whitespace removed. The
  * string is modified in place.
  */
-char *mrt_strchug(char *str);
+char *m_strchug(char *str);
 
 /**
  * Remove the leading and trailing whitespace from the given string.
@@ -151,8 +151,8 @@ char *mrt_strchug(char *str);
  * @return The @a str string with leading and trailing whitespace
  * removed. The string is modified in place.
  */
-#define mrt_strstrip(str) mrt_strchomp(mrt_strchug(str))
+#define m_strstrip(str) m_strchomp(m_strchug(str))
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_STR_UTILS_H
+#endif // M_STR_UTILS_H

@@ -22,35 +22,35 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_SEQUENCE_ITER_IMPL_H
-#define MRT_SEQUENCE_ITER_IMPL_H
+#ifndef M_SEQUENCE_ITER_IMPL_H
+#define M_SEQUENCE_ITER_IMPL_H
 
 #include <mrt/macros.h>
 #include <mrt/sequence-iter.h>
 #include <mrt/object-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_SEQ_ITER_CLASS(c) ((MRT_SeqIterClass*)(c))
+#define M_SEQ_ITER_CLASS(c) ((MSeqIterClass*)(c))
 
-typedef struct MRT_SeqIterClass MRT_SeqIterClass;
+typedef struct MSeqIterClass MSeqIterClass;
 
-struct MRT_SeqIter
+struct MSeqIter
 {
-  MRT_Object base_;
-  MRT_Seq *seq;
+  MObject base_;
+  MSeq *seq;
 };
 
-typedef MRT_Object* (*MRT_SeqIterNextFunc)(MRT_SeqIter*);
-typedef MRT_Object* (*MRT_SeqIterPrevFunc)(MRT_SeqIter*);
+typedef MObject* (*MSeqIterNextFunc)(MSeqIter*);
+typedef MObject* (*MSeqIterPrevFunc)(MSeqIter*);
 
-struct MRT_SeqIterClass
+struct MSeqIterClass
 {
-  MRT_ObjectClass base_;
-  MRT_SeqIterPrevFunc prev;
-  MRT_SeqIterNextFunc next;
+  MObjectClass base_;
+  MSeqIterPrevFunc prev;
+  MSeqIterNextFunc next;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_SEQUENCE_ITER_IMPL_H
+#endif // M_SEQUENCE_ITER_IMPL_H

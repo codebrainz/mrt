@@ -3,34 +3,34 @@
 #include <mrt/string-iter-impl.h>
 #include <mrt/char.h>
 
-static void mrt_string_ctor(MRT_Object *obj, va_list ap)
+static void m_string_ctor(MObject *obj, va_list ap)
 {
-  MRT_String *str = MRT_STRING(obj);
+  MString *str = M_STRING(obj);
   (void)ap;
   str->len = 0;
-  str->str = mrt_calloc(1, sizeof(uint32_t));
+  str->str = m_calloc(1, sizeof(uint32_t));
 }
 
-static void mrt_string_dtor(MRT_Object *obj)
+static void m_string_dtor(MObject *obj)
 {
-  MRT_String *str = MRT_STRING(obj);
+  MString *str = M_STRING(obj);
   str->len = 0;
-  mrt_free(str->str);
+  m_free(str->str);
   str->str = NULL;
 }
 
-static MRT_Object *mrt_string_get(MRT_Seq *seq, va_list ap)
+static MObject *m_string_get(MSeq *seq, va_list ap)
 {
-  MRT_String *str = MRT_STRING(seq);
+  MString *str = M_STRING(seq);
   uint32_t index = va_arg(ap, uint32_t);
   if (index >= str->len)
     return NULL;
-  return mrt_char_new(str->str[index]);
+  return m_char_new(str->str[index]);
 }
 
-static bool mrt_string_set(MRT_Seq *seq, va_list ap)
+static bool m_string_set(MSeq *seq, va_list ap)
 {
-  MRT_String *str = MRT_STRING(seq);
+  MString *str = M_STRING(seq);
   uint32_t index = va_arg(ap, uint32_t);
   uint32_t ch = va_arg(ap, uint32_t);
 
@@ -42,9 +42,9 @@ static bool mrt_string_set(MRT_Seq *seq, va_list ap)
   return true;
 }
 
-static bool mrt_string_add(MRT_Seq *seq, va_list ap)
+static bool m_string_add(MSeq *seq, va_list ap)
 {
-  MRT_String *str = MRT_STRING(seq);
+  MString *str = M_STRING(seq);
   uint32_t index = va_arg(ap, uint32_t);
   uint32_t ch = va_arg(ap, uint32_t);
   uint32_t new_len;
@@ -54,7 +54,7 @@ static bool mrt_string_add(MRT_Seq *seq, va_list ap)
     return false;
 
   new_len = str->len + 1;
-  tmp = mrt_realloc(str->str, (new_len + 1) * sizeof(uint32_t));
+  tmp = m_realloc(str->str, (new_len + 1) * sizeof(uint32_t));
   if (tmp == NULL)
     return false;
 
@@ -73,66 +73,66 @@ static bool mrt_string_add(MRT_Seq *seq, va_list ap)
   return true;
 }
 
-static bool mrt_string_del(MRT_Seq *seq, va_list ap)
+static bool m_string_del(MSeq *seq, va_list ap)
 {
   (void)seq; (void) ap;
   return false;
 }
 
-static uint32_t mrt_string_size(MRT_Seq *seq)
+static uint32_t m_string_size(MSeq *seq)
 {
-  MRT_String *str = MRT_STRING(seq);
-  mrt_return_val_if_fail(MRT_IS_STRING(str), 0);
+  MString *str = M_STRING(seq);
+  m_return_val_if_fail(M_IS_STRING(str), 0);
   return str->len;
 }
 
-static MRT_SeqIter *mrt_string_first(MRT_Seq *seq)
+static MSeqIter *m_string_first(MSeq *seq)
 {
-  MRT_String *str = MRT_STRING(seq);
-  mrt_return_val_if_fail(MRT_IS_STRING(str), NULL);
-  return mrt_string_iter_new(str, 0);
+  MString *str = M_STRING(seq);
+  m_return_val_if_fail(M_IS_STRING(str), NULL);
+  return m_string_iter_new(str, 0);
 }
 
-static MRT_SeqIter *mrt_string_last(MRT_Seq *seq)
+static MSeqIter *m_string_last(MSeq *seq)
 {
-  MRT_String *str = MRT_STRING(seq);
-  mrt_return_val_if_fail(MRT_IS_STRING(str), NULL);
-  return mrt_string_iter_new(str, str->len);
+  MString *str = M_STRING(seq);
+  m_return_val_if_fail(M_IS_STRING(str), NULL);
+  return m_string_iter_new(str, str->len);
 }
 
-MRT_Object *mrt_string_new(void)
+MObject *m_string_new(void)
 {
-  return mrt_object_construct(mrt_string_class(), NULL);
+  return m_object_construct(m_string_class(), NULL);
 }
 
-char *mrt_string_to_utf8(MRT_String *str)
+char *m_string_to_utf8(MString *str)
 {
   (void)str;
   return NULL;
 }
 
-void mrt_string_assign_utf8_length(MRT_String *str, const char *s, size_t len)
+void m_string_assign_utf8_length(MString *str, const char *s, size_t len)
 {
-  mrt_return_if_fail(MRT_IS_STRING(str));
-  mrt_return_if_fail(s);
+  m_return_if_fail(M_IS_STRING(str));
+  m_return_if_fail(s);
   (void)len;
 }
 
-void mrt_string_assign_utf8(MRT_String *str, const char *s)
+void m_string_assign_utf8(MString *str, const char *s)
 {
-  mrt_string_assign_utf8_length(str, s, mrt_strlen(s));
+  m_string_assign_utf8_length(str, s, m_strlen(s));
 }
 
-MRT_BEGIN_CLASS_DEF(MRT_String, string, mrt_seq_class())
+M_BEGIN_CLASS_DEF(MString, string, m_seq_class())
 {
-  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_string_ctor);
-  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_string_dtor);
-  MRT_SET_FIELD(MRT_SeqClass, get, mrt_string_get);
-  MRT_SET_FIELD(MRT_SeqClass, set, mrt_string_set);
-  MRT_SET_FIELD(MRT_SeqClass, add, mrt_string_add);
-  MRT_SET_FIELD(MRT_SeqClass, del, mrt_string_del);
-  MRT_SET_FIELD(MRT_SeqClass, size, mrt_string_size);
-  MRT_SET_FIELD(MRT_SeqClass, first, mrt_string_first);
-  MRT_SET_FIELD(MRT_SeqClass, last, mrt_string_last);
+  M_SET_FIELD(MObjectClass, ctor, m_string_ctor);
+  M_SET_FIELD(MObjectClass, dtor, m_string_dtor);
+  M_SET_FIELD(MSeqClass, get, m_string_get);
+  M_SET_FIELD(MSeqClass, set, m_string_set);
+  M_SET_FIELD(MSeqClass, add, m_string_add);
+  M_SET_FIELD(MSeqClass, del, m_string_del);
+  M_SET_FIELD(MSeqClass, size, m_string_size);
+  M_SET_FIELD(MSeqClass, first, m_string_first);
+  M_SET_FIELD(MSeqClass, last, m_string_last);
 }
-MRT_END_CLASS_DEF
+M_END_CLASS_DEF

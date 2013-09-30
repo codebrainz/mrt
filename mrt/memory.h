@@ -47,17 +47,17 @@
  * amount of safety and convenience.
  */
 
-#ifndef MRT_MEMORY_H
-#define MRT_MEMORY_H
+#ifndef M_MEMORY_H
+#define M_MEMORY_H
 
 #include <mrt/macros.h>
 #include <mrt/basictypes.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
 /** One higher than the maximum amount of memory that can be allocated.
  * used as a special obj where size_t is passed/returned. */
-#define MRT_SIZE_MAX ((size_t)-1)
+#define M_SIZE_MAX ((size_t)-1)
 
 /**
  * Memory resizing function.
@@ -68,14 +68,14 @@ MRT_BEGIN_CDECLS
  * @param sz The new size.
  * @return The resized memory.
  */
-typedef void* (*MRT_AllocatorReallocFunc) (void *ptr, size_t sz);
+typedef void* (*MAllocatorReallocFunc) (void *ptr, size_t sz);
 
 /**
  * Memory releasing function.
  *
  * @param ptr The memory to free.
  */
-typedef void (*MRT_AllocationFreeFunc) (void *ptr);
+typedef void (*MAllocationFreeFunc) (void *ptr);
 
 /**
  * Set the allocation, reallocation and deallocation functions.
@@ -97,8 +97,8 @@ typedef void (*MRT_AllocationFreeFunc) (void *ptr);
  * @return @c true if the allocator functions were set, @c false
  * otherwise.
  */
-bool mrt_set_allocator(MRT_AllocatorReallocFunc realloc_fn,
-  MRT_AllocationFreeFunc free_fn);
+bool m_set_allocator(MAllocatorReallocFunc realloc_fn,
+  MAllocationFreeFunc free_fn);
 
 /**
  * Allocate @a sz bytes of memory.
@@ -106,15 +106,15 @@ bool mrt_set_allocator(MRT_AllocatorReallocFunc realloc_fn,
  * @note The memory will be zero-filled.
  * @warning The return pointer has before it a special header that
  * MRT uses to track the size of the memory allocation. You *MUST*
- * free this memory using the special mrt_free() function and never
+ * free this memory using the special m_free() function and never
  * with any other free function (ie. stdlib free()).
  *
  * @param sz The size of the memory to allocate.
  * @return A pointer to the newly allocated memory which *MUST* be
- * released when no longer needed using the mrt_free() function. If
+ * released when no longer needed using the m_free() function. If
  * no more memory can be allocated, @c NULL will be returned.
  */
-#define mrt_malloc(sz) mrt_realloc(NULL, (sz))
+#define m_malloc(sz) m_realloc(NULL, (sz))
 
 /**
  * Resize @a ptr to @a sz.
@@ -123,7 +123,7 @@ bool mrt_set_allocator(MRT_AllocatorReallocFunc realloc_fn,
  * memory will be zero-filled.
  * @warning The return pointer has before it a special header that
  * MRT uses to track the size of the memory allocation. You *MUST*
- * free this memory using the special mrt_free() function and never
+ * free this memory using the special m_free() function and never
  * with any other free function (ie. stdlib free()).
  *
  * @param ptr The pointer to the memory to resize.
@@ -131,7 +131,7 @@ bool mrt_set_allocator(MRT_AllocatorReallocFunc realloc_fn,
  * @return A pointer to the resized memory or @c NULL of not enough
  * memory is available.
  */
-void *mrt_realloc(void *ptr, size_t sz);
+void *m_realloc(void *ptr, size_t sz);
 
 /**
  * Release allocated memory at @a ptr.
@@ -139,104 +139,104 @@ void *mrt_realloc(void *ptr, size_t sz);
  * @note You can pass @a ptr as @c NULL to this function and it will
  * do nothing, but why would you?
  * @warning The pointer must point to memory allocated with one of
- * the `mrt_*()` memory allocation functions since it contains a
+ * the `m_*()` memory allocation functions since it contains a
  * special header that holds the size of the allocation. *DO NOT* pass
  * pointers to this function that were not allocated with the
- * `mrt_*()` allocation functions.
+ * `m_*()` allocation functions.
  *
  * @param ptr The memory to release.
  */
-void mrt_free(void *ptr);
+void m_free(void *ptr);
 
 /**
  * Return the size of an allocated memory chunk.
  *
  * @param ptr Pointer to a chunk of memory allocated with one of the
- * `mrt_*()` memory allocation functions.
+ * `m_*()` memory allocation functions.
  * @return The size of the memory chunk or @c NULL if @a ptr is @c NULL.
  */
-size_t mrt_memsize(const void *ptr);
+size_t m_memsize(const void *ptr);
 
 /**
  * Fill a range of a chunk of memory with a specific byte.
  *
  * @param ptr Pointer to the chunk of memory allocated with one of the
- * `mrt_*()` memory allocation functions.
+ * `m_*()` memory allocation functions.
  * @param start The start address to zero-fill.
  * @param len The number of bytes to zero-fill. If @a len is equal
  * to @c SIZE_MAX (ie. ((size_t)-1)) then all of the memory from the
  * @a start to the end of the memory will be zero-filled.
  * @param byte The byte to put into each byte of the range of the memory.
  */
-void mrt_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte);
+void m_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte);
 
 /**
  * Fill a chunk of memory with a specific byte.
  *
  * @param ptr Pointer to the chunk of memory allocated with one of the
- * `mrt_*()` memory allocation functions.
+ * `m_*()` memory allocation functions.
  * @param byte The byte to put into each byte of the memory.
  */
-#define mrt_memfill(ptr, byte) mrt_memfill_range((ptr), 0, (size_t)-1, (byte))
+#define m_memfill(ptr, byte) m_memfill_range((ptr), 0, (size_t)-1, (byte))
 
 /**
  * Zero-fill a range of a chunk of memory.
  *
  * @param ptr Pointer to the chunk of memory allocated with one of the
- * `mrt_*()` memory allocation functions.
+ * `m_*()` memory allocation functions.
  * @param start The start address to zero-fill.
  * @param len The number of bytes to zero-fill. If @a len is equal
  * to @c SIZE_MAX (ie. ((size_t)-1)) then all of the memory from the
  * @a start to the end of the memory will be zero-filled.
  */
-#define mrt_memclear_range(ptr, start, len) mrt_memfill_range((ptr), (start), (len), 0)
+#define m_memclear_range(ptr, start, len) m_memfill_range((ptr), (start), (len), 0)
 
 /**
  * Zero-fill a chunk of memory.
  *
  * @param ptr Pointer to a chunk of memory alloacted with one of the
- * `mrt_*()` memory allocation functions.
+ * `m_*()` memory allocation functions.
  */
-#define mrt_memclear(ptr) mrt_memfill(ptr, 0)
+#define m_memclear(ptr) m_memfill(ptr, 0)
 
 /**
- * Alias of mrt_malloc() for allocating arrays.
+ * Alias of m_malloc() for allocating arrays.
  *
- * @note This is equivalent to `mrt_malloc((n)*(sz))`.
+ * @note This is equivalent to `m_malloc((n)*(sz))`.
  * @warning The return pointer has before it a special header that
  * MRT uses to track the size of the memory allocation. You *MUST*
- * free this memory using the special mrt_free() function and never
+ * free this memory using the special m_free() function and never
  * with any other free function (ie. stdlib free()).
  *
  * @param n The number of elements.
  * @param sz The size of each element.
  * @return The newly allocated memory that must be freed with
- * mrt_free() when no longer needed or @c NULL if no more memory
+ * m_free() when no longer needed or @c NULL if no more memory
  * is available.
  */
-#define mrt_calloc(n, sz) mrt_malloc((n)*(sz))
+#define m_calloc(n, sz) m_malloc((n)*(sz))
 
 /**
- * Alias of mrt_malloc() for allocating a type.
+ * Alias of m_malloc() for allocating a type.
  *
- * @note This is equivalent to `mrt_malloc(sizeof(T))`.
+ * @note This is equivalent to `m_malloc(sizeof(T))`.
  *
  * @param T The type of the "object" to allocate.
  * @return The newly allocated memory that must be free with
- * mrt_free() when no longer needed or @c NULL if no more memory
+ * m_free() when no longer needed or @c NULL if no more memory
  * is available.
  */
-#define mrt_new(T) mrt_malloc(sizeof(T))
+#define m_new(T) m_malloc(sizeof(T))
 
 /**
  * Duplicates a chunk of memory.
  *
  * @param prt The chunk of memory to duplicate.
  * @return The newly allocated duplicate memory that should be freed
- * with mrt_free() when no longer needed.
+ * with m_free() when no longer needed.
  */
-void *mrt_memdup(const void *ptr);
+void *m_memdup(const void *ptr);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_MEMORY_H
+#endif // M_MEMORY_H

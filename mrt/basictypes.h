@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_BASIC_TYPES_H
-#define MRT_BASIC_TYPES_H
+#ifndef M_BASIC_TYPES_H
+#define M_BASIC_TYPES_H
 
 #include <stddef.h>
 #include <mrt/macros.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
 #if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) \
       || defined(HAVE_STDBOOL_H)
@@ -48,6 +48,6 @@ typedef int bool;
 # error "Wrappers for standard int types not implemented."
 #endif
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_BASIC_TYPES_H
+#endif // M_BASIC_TYPES_H

@@ -1,27 +1,27 @@
-#ifndef MRT_BOOLEAN_H
-#define MRT_BOOLEAN_H
+#ifndef M_BOOLEAN_H
+#define M_BOOLEAN_H
 
 #include <mrt/number.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_BOOLEAN(v) ((MRT_Boolean*)(v))
-#define MRT_IS_BOOLEAN(v) mrt_object_is_instance(mrt_boolean_class(), MRT_OBJECT(v))
+#define M_BOOLEAN(v) ((MBoolean*)(v))
+#define M_IS_BOOLEAN(v) m_object_is_instance(m_boolean_class(), M_OBJECT(v))
 
-typedef struct MRT_Boolean MRT_Boolean;
+typedef struct MBoolean MBoolean;
 
-const MRT_ObjectClass *mrt_boolean_class(void);
+const MObjectClass *m_boolean_class(void);
 
-MRT_Object *mrt_boolean_true(void);
-MRT_Object *mrt_boolean_false(void);
+MObject *m_boolean_true(void);
+MObject *m_boolean_false(void);
 
-MRT_Object *mrt_boolean_new(bool val);
+MObject *m_boolean_new(bool val);
 
-bool mrt_boolean_get(MRT_Boolean *b);
+bool m_boolean_get(MBoolean *b);
 
-#define mrt_boolean_is_true(b) mrt_boolean_get(MRT_BOOLEAN(b))
-#define mrt_boolean_is_false(b) (!mrt_boolean_get(MRT_BOOLEAN(b)))
+#define m_boolean_is_true(b) m_boolean_get(M_BOOLEAN(b))
+#define m_boolean_is_false(b) (!m_boolean_get(M_BOOLEAN(b)))
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_BOOLEAN_H
+#endif // M_BOOLEAN_H

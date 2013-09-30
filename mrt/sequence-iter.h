@@ -22,25 +22,25 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_SEQUENCE_ITER_H
-#define MRT_SEQUENCE_ITER_H
+#ifndef M_SEQUENCE_ITER_H
+#define M_SEQUENCE_ITER_H
 
 #include <mrt/object.h>
 #include <mrt/sequence.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_SEQ_ITER(v) ((MRT_SeqIter*)(v))
-#define MRT_IS_SEQ_ITER(v) mrt_object_is_instance(mrt_seq_iter_class(), MRT_OBJECT(v))
+#define M_SEQ_ITER(v) ((MSeqIter*)(v))
+#define M_IS_SEQ_ITER(v) m_object_is_instance(m_seq_iter_class(), M_OBJECT(v))
 
-typedef struct MRT_SeqIter MRT_SeqIter;
+typedef struct MSeqIter MSeqIter;
 
-const MRT_ObjectClass *mrt_seq_iter_class(void);
+const MObjectClass *m_seq_iter_class(void);
 
-struct MRT_Seq *seq_iter_get_seq(MRT_SeqIter*);
-MRT_Object *seq_iter_prev(MRT_SeqIter*);
-MRT_Object *seq_iter_next(MRT_SeqIter*);
+struct MSeq *seq_iter_get_seq(MSeqIter*);
+MObject *seq_iter_prev(MSeqIter*);
+MObject *seq_iter_next(MSeqIter*);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_SEQUENCE_ITER_H
+#endif // M_SEQUENCE_ITER_H

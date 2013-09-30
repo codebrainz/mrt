@@ -1,24 +1,24 @@
-#ifndef MRT_INTEGER_IMPL_H
-#define MRT_INTEGER_IMPL_H
+#ifndef M_INTEGER_IMPL_H
+#define M_INTEGER_IMPL_H
 
 #include <mrt/integer.h>
 #include <mrt/number-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-typedef struct MRT_IntegerClass MRT_IntegerClass;
+typedef struct MIntegerClass MIntegerClass;
 
-struct MRT_Integer
+struct MInteger
 {
-  MRT_Number base_;
+  MNumber base_;
   int64_t obj;
 };
 
-struct MRT_IntegerClass
+struct MIntegerClass
 {
-  MRT_NumberClass class_;
+  MNumberClass class_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_INTEGER_IMPL_H
+#endif // M_INTEGER_IMPL_H

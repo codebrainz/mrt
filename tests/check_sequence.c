@@ -4,21 +4,21 @@
 MAKE_TEST_FUNC(get)
 {
 #if 0
-  MRT_Seq *s;
-  MRT_Object *v_in, *v_out;
+  MSeq *s;
+  MObject *v_in, *v_out;
 
-  s = mrt_list_new();
+  s = m_list_new();
 
   // Single item get
-  v_in = mrt_none();
-  mrt_seq_add(s, 0, v_in);
-  v_out = mrt_seq_get(s, 0);
+  v_in = m_none();
+  m_seq_add(s, 0, v_in);
+  v_out = m_seq_get(s, 0);
   CuAssertPtrEquals(tc, v_in, v_out);
 
 
 
-  mrt_object_unref(v_in);
-  mrt_object_unref(MRT_OBJECT(s));
+  m_object_unref(v_in);
+  m_object_unref(M_OBJECT(s));
 #endif
   (void)tc;
 }

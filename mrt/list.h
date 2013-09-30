@@ -22,22 +22,22 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_LIST_H
-#define MRT_LIST_H
+#ifndef M_LIST_H
+#define M_LIST_H
 
 #include <mrt/sequence.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_LIST(v) ((MRT_List*)(v))
-#define MRT_IS_LIST(v) mrt_object_is_instance(mrt_list_class(), MRT_OBJECT(v))
+#define M_LIST(v) ((MList*)(v))
+#define M_IS_LIST(v) m_object_is_instance(m_list_class(), M_OBJECT(v))
 
-typedef struct MRT_List MRT_List;
+typedef struct MList MList;
 
-const MRT_ObjectClass *mrt_list_class();
+const MObjectClass *m_list_class();
 
-MRT_Seq *mrt_list_new(void);
+MSeq *m_list_new(void);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_LIST_H
+#endif // M_LIST_H

@@ -1,11 +1,11 @@
-#ifndef MRT_UTILS_H
-#define MRT_UTILS_H
+#ifndef M_UTILS_H
+#define M_UTILS_H
 
 #include <mrt/macros.h>
 #include <mrt/basictypes.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_UTILS_H
+#endif // M_UTILS_H

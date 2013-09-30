@@ -1,21 +1,21 @@
-#ifndef MRT_REAL_H
-#define MRT_REAL_H
+#ifndef M_REAL_H
+#define M_REAL_H
 
 #include <mrt/number.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_REAL(v) ((MRT_Real*)(v))
-#define MRT_IS_REAL(v) mrt_object_is_instance(mrt_real_class(), MRT_OBJECT(v))
+#define M_REAL(v) ((MReal*)(v))
+#define M_IS_REAL(v) m_object_is_instance(m_real_class(), M_OBJECT(v))
 
-typedef struct MRT_Real MRT_Real;
+typedef struct MReal MReal;
 
-const MRT_ObjectClass *mrt_real_class(void);
+const MObjectClass *m_real_class(void);
 
-MRT_Object *mrt_real_new(double val);
-double mrt_real_get(MRT_Real *r);
-void mrt_real_set(MRT_Real *r, double val);
+MObject *m_real_new(double val);
+double m_real_get(MReal *r);
+void m_real_set(MReal *r, double val);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_REAL_H
+#endif // M_REAL_H

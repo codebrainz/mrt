@@ -1,17 +1,17 @@
-#ifndef MRT_STRING_ITER_H
-#define MRT_STRING_ITER_H
+#ifndef M_STRING_ITER_H
+#define M_STRING_ITER_H
 
 #include <mrt/sequence-iter.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_STRING_ITER(v) ((MRT_StringIter*)(v))
-#define MRT_IS_STRING_ITER(v) mrt_object_is_instance(mrt_string_iter_class(), MRT_OBJECT(v))
+#define M_STRING_ITER(v) ((MStringIter*)(v))
+#define M_IS_STRING_ITER(v) m_object_is_instance(m_string_iter_class(), M_OBJECT(v))
 
-typedef struct MRT_StringIter MRT_StringIter;
+typedef struct MStringIter MStringIter;
 
-const MRT_ObjectClass *mrt_string_iter_class(void);
+const MObjectClass *m_string_iter_class(void);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_STRING_ITER_H
+#endif // M_STRING_ITER_H

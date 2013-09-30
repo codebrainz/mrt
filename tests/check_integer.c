@@ -1,49 +1,49 @@
 #include <mrt/integer.h>
 #include "CuTest.h"
 
-void test_mrt_integer(CuTest *tc)
+void test_m_integer(CuTest *tc)
 {
-  MRT_Object *i;
+  MObject *i;
 
   // is integer and is number
-  i = mrt_integer_new(123);
-  CuAssertTrue(tc, MRT_IS_INTEGER(i));
-  CuAssertTrue(tc, MRT_IS_NUMBER(i));
-  mrt_object_unref(i);
+  i = m_integer_new(123);
+  CuAssertTrue(tc, M_IS_INTEGER(i));
+  CuAssertTrue(tc, M_IS_NUMBER(i));
+  m_object_unref(i);
 
   // zero
-  i = mrt_integer_new(0);
-  CuAssertInt64Equals(tc, 0, mrt_integer_get(MRT_INTEGER(i)));
-  mrt_object_unref(i);
+  i = m_integer_new(0);
+  CuAssertInt64Equals(tc, 0, m_integer_get(M_INTEGER(i)));
+  m_object_unref(i);
 
   // positive number
-  i = mrt_integer_new(200);
-  CuAssertInt64Equals(tc, 200, mrt_integer_get(MRT_INTEGER(i)));
-  mrt_object_unref(i);
+  i = m_integer_new(200);
+  CuAssertInt64Equals(tc, 200, m_integer_get(M_INTEGER(i)));
+  m_object_unref(i);
 
   // negative number
-  i = mrt_integer_new(-200);
-  CuAssertInt64Equals(tc, -200, mrt_integer_get(MRT_INTEGER(i)));
-  mrt_object_unref(i);
+  i = m_integer_new(-200);
+  CuAssertInt64Equals(tc, -200, m_integer_get(M_INTEGER(i)));
+  m_object_unref(i);
 
   // lower bounds
-  i = mrt_integer_new(INT64_MIN);
-  CuAssertInt64Equals(tc, INT64_MIN, mrt_integer_get(MRT_INTEGER(i)));
-  mrt_object_unref(i);
+  i = m_integer_new(INT64_MIN);
+  CuAssertInt64Equals(tc, INT64_MIN, m_integer_get(M_INTEGER(i)));
+  m_object_unref(i);
 
   // upper bounds
-  i = mrt_integer_new(INT64_MAX);
-  CuAssertInt64Equals(tc, INT64_MAX, mrt_integer_get(MRT_INTEGER(i)));
-  mrt_object_unref(i);
+  i = m_integer_new(INT64_MAX);
+  CuAssertInt64Equals(tc, INT64_MAX, m_integer_get(M_INTEGER(i)));
+  m_object_unref(i);
 }
 
-CuSuite* mrt_integer_get_test_suite(void)
+CuSuite* m_integer_get_test_suite(void)
 {
     static CuSuite suite;
 
     CuSuiteInit(&suite);
 
-    SUITE_ADD_TEST(&suite, test_mrt_integer);
+    SUITE_ADD_TEST(&suite, test_m_integer);
 
     return &suite;
 }

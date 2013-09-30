@@ -22,20 +22,20 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_LIST_ITER_H
-#define MRT_LIST_ITER_H
+#ifndef M_LIST_ITER_H
+#define M_LIST_ITER_H
 
 #include <mrt/object.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-typedef struct MRT_ListIter MRT_ListIter;
+typedef struct MListIter MListIter;
 
-#define MRT_LIST_ITER(v) ((MRT_ListIter*)(v))
-#define MRT_IS_LIST_ITER(v) mrt_object_is_instance(mrt_list_iter_class(), MRT_OBJECT(v))
+#define M_LIST_ITER(v) ((MListIter*)(v))
+#define M_IS_LIST_ITER(v) m_object_is_instance(m_list_iter_class(), M_OBJECT(v))
 
-const MRT_ObjectClass *mrt_list_iter_class(void);
+const MObjectClass *m_list_iter_class(void);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_LIST_ITER_H
+#endif // M_LIST_ITER_H

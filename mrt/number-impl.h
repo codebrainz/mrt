@@ -1,25 +1,25 @@
-#ifndef MRT_NUMBER_IMPL_H
-#define MRT_NUMBER_IMPL_H
+#ifndef M_NUMBER_IMPL_H
+#define M_NUMBER_IMPL_H
 
 #include <mrt/number.h>
 #include <mrt/object-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_NUMBER_CLASS(c) ((MRT_NumberClass*)(c))
+#define M_NUMBER_CLASS(c) ((MNumberClass*)(c))
 
-typedef struct MRT_NumberClass MRT_NumberClass;
+typedef struct MNumberClass MNumberClass;
 
-struct MRT_Number
+struct MNumber
 {
-  MRT_Object base_;
+  MObject base_;
 };
 
-struct MRT_NumberClass
+struct MNumberClass
 {
-  MRT_ObjectClass base_;
+  MObjectClass base_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_NUMBER_IMPL_H
+#endif // M_NUMBER_IMPL_H

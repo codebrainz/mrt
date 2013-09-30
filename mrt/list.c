@@ -29,32 +29,32 @@
 #include <mrt/memory.h>
 #include <mrt/object.h>
 
-MRT_Seq *mrt_list_new(void)
+MSeq *m_list_new(void)
 {
-  return MRT_SEQ(mrt_object_construct(mrt_list_class(), NULL));
+  return M_SEQ(m_object_construct(m_list_class(), NULL));
 }
 
-static void mrt_list_ctor(MRT_Object *obj, va_list ap)
+static void m_list_ctor(MObject *obj, va_list ap)
 {
   (void) obj;
   (void) ap;
 }
 
-static void mrt_list_dtor(MRT_Object *obj)
+static void m_list_dtor(MObject *obj)
 {
-  MRT_List *list = MRT_LIST(obj);
-  MRT_ListLink *link = list->head;
+  MList *list = M_LIST(obj);
+  MListLink *link = list->head;
   while (link) {
-    MRT_ListLink *next = link->next;
-    mrt_object_unref(MRT_OBJECT(link));
+    MListLink *next = link->next;
+    m_object_unref(M_OBJECT(link));
     link = next;
   }
 }
 
-static MRT_Object *mrt_list_get(MRT_Seq *seq, va_list ap)
+static MObject *m_list_get(MSeq *seq, va_list ap)
 {
-  MRT_List *list = MRT_LIST(seq);
-  MRT_ListLink *link;
+  MList *list = M_LIST(seq);
+  MListLink *link;
   uint32_t count, index = va_arg(ap, uint32_t);
   if (index >= list->size) // bounds check
     return NULL;
@@ -77,21 +77,21 @@ static MRT_Object *mrt_list_get(MRT_Seq *seq, va_list ap)
   return NULL;
 }
 
-static bool mrt_list_set(MRT_Seq *seq, va_list ap)
+static bool m_list_set(MSeq *seq, va_list ap)
 {
-  MRT_List *list = MRT_LIST(seq);
-  MRT_ListLink *link;
+  MList *list = M_LIST(seq);
+  MListLink *link;
   uint32_t count, index = va_arg(ap, uint32_t);
-  MRT_Object *obj = va_arg(ap, MRT_Object*);
-  mrt_return_val_if_fail(obj, false);
+  MObject *obj = va_arg(ap, MObject*);
+  m_return_val_if_fail(obj, false);
   if (index >= list->size) // bounds check
     return false;
   else if (index < (list->size / 2)) { // count from head
     count = 0;
     for (link = list->head; link != NULL; link = link->next) {
       if (count == index) {
-        mrt_object_unref(link->obj);
-        link->obj = mrt_object_ref_sync(obj);
+        m_object_unref(link->obj);
+        link->obj = m_object_ref_sync(obj);
         return true;
       }
       count++;
@@ -101,8 +101,8 @@ static bool mrt_list_set(MRT_Seq *seq, va_list ap)
     count = list->size - 1;
     for (link = list->tail; link != NULL; link = link->prev) {
       if (count == back_index) {
-        mrt_object_unref(link->obj);
-        link->obj = mrt_object_ref_sync(obj);
+        m_object_unref(link->obj);
+        link->obj = m_object_ref_sync(obj);
         return true;
       }
       count--;
@@ -111,33 +111,33 @@ static bool mrt_list_set(MRT_Seq *seq, va_list ap)
   return false;
 }
 
-static bool mrt_list_add(MRT_Seq *seq, va_list ap)
+static bool m_list_add(MSeq *seq, va_list ap)
 {
-  MRT_List *list = MRT_LIST(seq);
+  MList *list = M_LIST(seq);
   uint32_t index;
-  MRT_Object *obj;
-  MRT_ListLink *link;
+  MObject *obj;
+  MListLink *link;
 
-  mrt_return_val_if_fail(MRT_IS_LIST(list), false);
+  m_return_val_if_fail(M_IS_LIST(list), false);
 
   index = va_arg(ap, uint32_t);
-  obj = va_arg(ap, MRT_Object*);
+  obj = va_arg(ap, MObject*);
 
-  if (index > list->size || !MRT_IS_OBJECT(obj))
+  if (index > list->size || !M_IS_OBJECT(obj))
     return false;
 
   if (index == 0) { // prepend
-    link = mrt_list_link_new(obj, NULL, list->head);
+    link = m_list_link_new(obj, NULL, list->head);
     list->head = link;
-    mrt_object_ref_sync(MRT_OBJECT(link));
+    m_object_ref_sync(M_OBJECT(link));
     list->size++;
     if (list->tail == NULL)
       list->tail = list->head;
     return true;
   } else if (index == list->size) { // append
-    link = mrt_list_link_new(obj, list->tail, NULL);
+    link = m_list_link_new(obj, list->tail, NULL);
     list->tail = link;
-    mrt_object_ref_sync(MRT_OBJECT(link));
+    m_object_ref_sync(M_OBJECT(link));
     list->size++;
     if (list->head == NULL)
       list->head = list->tail;
@@ -145,11 +145,11 @@ static bool mrt_list_add(MRT_Seq *seq, va_list ap)
   } else { // insert somewhere else
     if (index < (list->size / 2)) { // start from begining
       uint32_t count = 0;
-      MRT_ListLink *iter;
+      MListLink *iter;
       for (iter = list->head; iter != NULL; iter = iter->next) {
         if (count == index) {
-          link = mrt_list_link_new(obj, iter->prev, iter);
-          mrt_object_ref_sync(MRT_OBJECT(link));
+          link = m_list_link_new(obj, iter->prev, iter);
+          m_object_ref_sync(M_OBJECT(link));
           if (iter->prev)
             iter->prev->next = link;
           iter->prev = link;
@@ -161,11 +161,11 @@ static bool mrt_list_add(MRT_Seq *seq, va_list ap)
     } else { // start from end
       uint32_t back_index = list->size - index;
       uint32_t count = list->size - 1;
-      MRT_ListLink *iter;
+      MListLink *iter;
       for (iter = list->tail; iter != NULL; iter = iter->prev) {
         if (count == back_index) {
-          link = mrt_list_link_new(obj, iter->prev, iter);
-          mrt_object_ref_sync(MRT_OBJECT(link));
+          link = m_list_link_new(obj, iter->prev, iter);
+          m_object_ref_sync(M_OBJECT(link));
           if (iter->prev)
             iter->prev->next = link;
           iter->prev = link;
@@ -180,10 +180,10 @@ static bool mrt_list_add(MRT_Seq *seq, va_list ap)
   return false;
 }
 
-static bool mrt_list_del(MRT_Seq *seq, va_list ap)
+static bool m_list_del(MSeq *seq, va_list ap)
 {
-  MRT_List *list = MRT_LIST(seq);
-  MRT_ListLink *link, *found_link = NULL;
+  MList *list = M_LIST(seq);
+  MListLink *link, *found_link = NULL;
   uint32_t count, index = va_arg(ap, uint32_t);
   if (index >= list->size) // bounds check
     return false;
@@ -212,40 +212,40 @@ static bool mrt_list_del(MRT_Seq *seq, va_list ap)
       found_link->prev->next = found_link->next;
     if (found_link->next)
       found_link->next->prev = found_link->prev;
-    mrt_object_unref(MRT_OBJECT(found_link));
+    m_object_unref(M_OBJECT(found_link));
     list->size--;
     return true;
   }
   return false;
 }
 
-static uint32_t mrt_list_size(MRT_Seq *seq)
+static uint32_t m_list_size(MSeq *seq)
 {
-  return MRT_LIST(seq)->size;
+  return M_LIST(seq)->size;
 }
 
-static MRT_SeqIter *mrt_list_first(MRT_Seq *seq)
+static MSeqIter *m_list_first(MSeq *seq)
 {
-  MRT_List *list = MRT_LIST(seq);
-  return MRT_SEQ_ITER(mrt_list_iter_new(list, list->head));
+  MList *list = M_LIST(seq);
+  return M_SEQ_ITER(m_list_iter_new(list, list->head));
 }
 
-static MRT_SeqIter *mrt_list_last(MRT_Seq *seq)
+static MSeqIter *m_list_last(MSeq *seq)
 {
-  MRT_List *list = MRT_LIST(seq);
-  return MRT_SEQ_ITER(mrt_list_iter_new(list, list->tail));
+  MList *list = M_LIST(seq);
+  return M_SEQ_ITER(m_list_iter_new(list, list->tail));
 }
 
-MRT_BEGIN_CLASS_DEF(MRT_List, list, mrt_seq_class())
+M_BEGIN_CLASS_DEF(MList, list, m_seq_class())
 {
-  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_list_ctor);
-  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_list_dtor);
-  MRT_SET_FIELD(MRT_SeqClass, get, mrt_list_get);
-  MRT_SET_FIELD(MRT_SeqClass, set, mrt_list_set);
-  MRT_SET_FIELD(MRT_SeqClass, add, mrt_list_add);
-  MRT_SET_FIELD(MRT_SeqClass, del, mrt_list_del);
-  MRT_SET_FIELD(MRT_SeqClass, size, mrt_list_size);
-  MRT_SET_FIELD(MRT_SeqClass, first, mrt_list_first);
-  MRT_SET_FIELD(MRT_SeqClass, last, mrt_list_last);
+  M_SET_FIELD(MObjectClass, ctor, m_list_ctor);
+  M_SET_FIELD(MObjectClass, dtor, m_list_dtor);
+  M_SET_FIELD(MSeqClass, get, m_list_get);
+  M_SET_FIELD(MSeqClass, set, m_list_set);
+  M_SET_FIELD(MSeqClass, add, m_list_add);
+  M_SET_FIELD(MSeqClass, del, m_list_del);
+  M_SET_FIELD(MSeqClass, size, m_list_size);
+  M_SET_FIELD(MSeqClass, first, m_list_first);
+  M_SET_FIELD(MSeqClass, last, m_list_last);
 }
-MRT_END_CLASS_DEF
+M_END_CLASS_DEF

@@ -1,32 +1,32 @@
 #include <mrt/none.h>
 #include "CuTest.h"
 
-void test_mrt_none(CuTest *tc)
+void test_m_none(CuTest *tc)
 {
-  MRT_Object *none1, *none2;
+  MObject *none1, *none2;
 
-  none1 = mrt_none();
+  none1 = m_none();
   CuAssertPtrNotNull(tc, none1);
 
-  none2 = mrt_none();
+  none2 = m_none();
   CuAssertPtrNotNull(tc, none2);
 
-  CuAssertTrue(tc, MRT_IS_NONE(none1));
-  CuAssertTrue(tc, MRT_IS_NONE(none2));
+  CuAssertTrue(tc, M_IS_NONE(none1));
+  CuAssertTrue(tc, M_IS_NONE(none2));
 
   CuAssertPtrEquals(tc, none1, none2);
 
-  mrt_object_unref(MRT_OBJECT(none1));
-  mrt_object_unref(MRT_OBJECT(none2));
+  m_object_unref(M_OBJECT(none1));
+  m_object_unref(M_OBJECT(none2));
 }
 
-CuSuite* mrt_none_get_test_suite(void)
+CuSuite* m_none_get_test_suite(void)
 {
     static CuSuite suite;
 
     CuSuiteInit(&suite);
 
-    SUITE_ADD_TEST(&suite, test_mrt_none);
+    SUITE_ADD_TEST(&suite, test_m_none);
 
     return &suite;
 }

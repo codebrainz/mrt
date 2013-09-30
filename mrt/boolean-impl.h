@@ -1,25 +1,25 @@
-#ifndef MRT_BOOLEAN_IMPL_H
-#define MRT_BOOLEAN_IMPL_H
+#ifndef M_BOOLEAN_IMPL_H
+#define M_BOOLEAN_IMPL_H
 
 #include <mrt/boolean.h>
 #include <mrt/number-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_BOOLEAN_CLASS(c) ((MRT_BooleanClass*)(c))
+#define M_BOOLEAN_CLASS(c) ((MBooleanClass*)(c))
 
-typedef struct MRT_BooleanClass MRT_BooleanClass;
+typedef struct MBooleanClass MBooleanClass;
 
-struct MRT_Boolean
+struct MBoolean
 {
-  MRT_Number base_;
+  MNumber base_;
 };
 
-struct MRT_BooleanClass
+struct MBooleanClass
 {
-  MRT_NumberClass base_;
+  MNumberClass base_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_BOOLEAN_IMPL_H
+#endif // M_BOOLEAN_IMPL_H

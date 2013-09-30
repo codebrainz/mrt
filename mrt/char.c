@@ -1,53 +1,53 @@
 #include <mrt/char-impl.h>
 
 static bool char_ascii_initialized = false;
-static MRT_Char char_ascii[128];
+static MChar char_ascii[128];
 
 static void char_once_init(void)
 {
   if (!char_ascii_initialized) {
     uint32_t i;
     for (i = 0; i < 128; i++)
-      mrt_object_construct(mrt_char_class(), MRT_OBJECT(&char_ascii[i]), i);
+      m_object_construct(m_char_class(), M_OBJECT(&char_ascii[i]), i);
     char_ascii_initialized = true;
   }
 }
 
-static void mrt_char_ctor(MRT_Object *obj, va_list ap)
+static void m_char_ctor(MObject *obj, va_list ap)
 {
-  MRT_Char *c = MRT_CHAR(obj);
+  MChar *c = M_CHAR(obj);
   c->obj = va_arg(ap, uint32_t);
 }
 
-static void mrt_char_dtor(MRT_Object *obj)
+static void m_char_dtor(MObject *obj)
 {
-  MRT_Char *c = MRT_CHAR(obj);
+  MChar *c = M_CHAR(obj);
   c->obj = 0;
 }
 
-MRT_Object *mrt_char_new(uint32_t ch)
+MObject *m_char_new(uint32_t ch)
 {
   char_once_init();
   if (ch < 128)
-    return mrt_object_ref(MRT_OBJECT(&char_ascii[ch]));
-  return mrt_object_construct(mrt_char_class(), NULL, ch);
+    return m_object_ref(M_OBJECT(&char_ascii[ch]));
+  return m_object_construct(m_char_class(), NULL, ch);
 }
 
-uint32_t mrt_char_get(MRT_Char *c)
+uint32_t m_char_get(MChar *c)
 {
-  mrt_return_val_if_fail(MRT_IS_CHAR(c), 0);
+  m_return_val_if_fail(M_IS_CHAR(c), 0);
   return c->obj;
 }
 
-void mrt_char_set(MRT_Char *c, uint32_t ch)
+void m_char_set(MChar *c, uint32_t ch)
 {
-  mrt_return_if_fail(MRT_IS_CHAR(c));
+  m_return_if_fail(M_IS_CHAR(c));
   c->obj = ch;
 }
 
-MRT_BEGIN_CLASS_DEF(MRT_Char, char, mrt_object_class())
+M_BEGIN_CLASS_DEF(MChar, char, m_object_class())
 {
-  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_char_ctor);
-  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_char_dtor);
+  M_SET_FIELD(MObjectClass, ctor, m_char_ctor);
+  M_SET_FIELD(MObjectClass, dtor, m_char_dtor);
 }
-MRT_END_CLASS_DEF
+M_END_CLASS_DEF

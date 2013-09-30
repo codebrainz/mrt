@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_ARRAY_H
-#define MRT_ARRAY_H
+#ifndef M_ARRAY_H
+#define M_ARRAY_H
 
 #include <mrt/macros.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
 
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_ARRAY_H
+#endif // M_ARRAY_H

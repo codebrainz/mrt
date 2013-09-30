@@ -22,41 +22,41 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_MACROS_H
-#define MRT_MACROS_H
+#ifndef M_MACROS_H
+#define M_MACROS_H
 
 #include <stdio.h>
 
 #ifdef __cplusplus
-# define MRT_BEGIN_CDECLS extern "C" {
-# define MRT_END_CDECLS   }
+# define M_BEGIN_CDECLS extern "C" {
+# define M_END_CDECLS   }
 #else
-# define MRT_BEGIN_CDECLS
-# define MRT_END_CDECLS
+# define M_BEGIN_CDECLS
+# define M_END_CDECLS
 #endif
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#ifdef MRT_DISABLE_CHECKS
-# define mrt_return_if_fail(x)          do { } while (0)
-# define mrt_return_val_if_fail(x, val) do { } while (0)
-# define mrt_warn_if_fail(x)            do { } while (0)
+#ifdef M_DISABLE_CHECKS
+# define m_return_if_fail(x)          do { } while (0)
+# define m_return_val_if_fail(x, val) do { } while (0)
+# define m_warn_if_fail(x)            do { } while (0)
 #else
-# define mrt_return_if_fail(x) do {                  \
+# define m_return_if_fail(x) do {                  \
   if (!(x)) {                                        \
     fprintf(stderr, "warning:" __FILE__              \
             ":%d: assertion `" #x "' failed.\n",     \
             __LINE__);                               \
     return;                                          \
   } } while (0)
-# define mrt_return_val_if_fail(x, val) do {     \
+# define m_return_val_if_fail(x, val) do {     \
   if (!(x)) {                                    \
     fprintf(stderr, "warning:" __FILE__          \
             ":%d: assertion `" #x "' failed.\n", \
             __LINE__);                           \
     return (val);                                \
   } } while (0)
-# define mrt_warn_if_fail(x) do {                  \
+# define m_warn_if_fail(x) do {                  \
   if (!(x)) {                                      \
       fprintf(stderr, "warning:" __FILE__          \
               ":%d: assertion `" #x "' failed.\n", \
@@ -64,6 +64,6 @@ MRT_BEGIN_CDECLS
   } } while (0)
 #endif
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_MACROS_H
+#endif // M_MACROS_H

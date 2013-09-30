@@ -26,53 +26,53 @@
 #include <mrt/sequence-impl.h>
 #include <mrt/memory.h>
 
-MRT_ListIter *mrt_list_iter_new(MRT_List *list, MRT_ListLink *link)
+MListIter *m_list_iter_new(MList *list, MListLink *link)
 {
-  mrt_return_val_if_fail(MRT_IS_LIST(list), NULL);
-  mrt_return_val_if_fail(link, NULL);
-  return MRT_LIST_ITER(mrt_object_construct(mrt_list_iter_class(),
+  m_return_val_if_fail(M_IS_LIST(list), NULL);
+  m_return_val_if_fail(link, NULL);
+  return M_LIST_ITER(m_object_construct(m_list_iter_class(),
     NULL, list, link));
 }
 
-static void mrt_list_iter_ctor(MRT_Object *obj, va_list ap)
+static void m_list_iter_ctor(MObject *obj, va_list ap)
 {
-  MRT_ListIter *iter = MRT_LIST_ITER(obj);
-  MRT_List *list = va_arg(ap, MRT_List*);
-  MRT_ListLink *link = va_arg(ap, MRT_ListLink*);
-  MRT_SEQ_ITER(iter)->seq =
-    MRT_SEQ(mrt_object_ref(MRT_OBJECT(list)));
+  MListIter *iter = M_LIST_ITER(obj);
+  MList *list = va_arg(ap, MList*);
+  MListLink *link = va_arg(ap, MListLink*);
+  M_SEQ_ITER(iter)->seq =
+    M_SEQ(m_object_ref(M_OBJECT(list)));
   iter->link = link;
 }
 
-static void mrt_list_iter_dtor(MRT_Object *obj)
+static void m_list_iter_dtor(MObject *obj)
 {
-  //MRT_ListIter *iter = MRT_LIST_ITER(obj);
+  //MListIter *iter = M_LIST_ITER(obj);
   (void)obj;
 }
 
-static MRT_Object *mrt_list_iter_prev(MRT_SeqIter *iter)
+static MObject *m_list_iter_prev(MSeqIter *iter)
 {
-  MRT_ListIter *list_iter = MRT_LIST_ITER(iter);
+  MListIter *list_iter = M_LIST_ITER(iter);
   if (list_iter == NULL || list_iter->link == NULL)
     return NULL;
   list_iter->link = list_iter->link->prev;
   return list_iter->link->obj;
 }
 
-static MRT_Object *mrt_list_iter_next(MRT_SeqIter *iter)
+static MObject *m_list_iter_next(MSeqIter *iter)
 {
-  MRT_ListIter *list_iter = MRT_LIST_ITER(iter);
+  MListIter *list_iter = M_LIST_ITER(iter);
   if (list_iter == NULL || list_iter->link == NULL)
     return NULL;
   list_iter->link = list_iter->link->next;
   return list_iter->link->obj;
 }
 
-MRT_BEGIN_CLASS_DEF(MRT_ListIter, list_iter, mrt_seq_iter_class())
+M_BEGIN_CLASS_DEF(MListIter, list_iter, m_seq_iter_class())
 {
-  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_list_iter_ctor);
-  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_list_iter_dtor);
-  MRT_SET_FIELD(MRT_SeqIterClass, prev, mrt_list_iter_prev);
-  MRT_SET_FIELD(MRT_SeqIterClass, next, mrt_list_iter_next);
+  M_SET_FIELD(MObjectClass, ctor, m_list_iter_ctor);
+  M_SET_FIELD(MObjectClass, dtor, m_list_iter_dtor);
+  M_SET_FIELD(MSeqIterClass, prev, m_list_iter_prev);
+  M_SET_FIELD(MSeqIterClass, next, m_list_iter_next);
 }
-MRT_END_CLASS_DEF
+M_END_CLASS_DEF

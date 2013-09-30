@@ -1,26 +1,26 @@
-#ifndef MRT_CHAR_IMPL_H
-#define MRT_CHAR_IMPL_H
+#ifndef M_CHAR_IMPL_H
+#define M_CHAR_IMPL_H
 
 #include <mrt/char.h>
 #include <mrt/number-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_CHAR_CLASS(c)
+#define M_CHAR_CLASS(c)
 
-typedef struct MRT_CharClass MRT_CharClass;
+typedef struct MCharClass MCharClass;
 
-struct MRT_Char
+struct MChar
 {
-  MRT_Number base_;
+  MNumber base_;
   uint32_t obj;
 };
 
-struct MRT_CharClass
+struct MCharClass
 {
-  MRT_NumberClass base_;
+  MNumberClass base_;
 };
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_CHAR_IMPL_H
+#endif // M_CHAR_IMPL_H

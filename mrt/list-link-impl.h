@@ -22,44 +22,44 @@
  * SOFTWARE.
  */
 
-#ifndef MRT_LIST_LINK_H
-#define MRT_LIST_LINK_H
+#ifndef M_LIST_LINK_H
+#define M_LIST_LINK_H
 
 #include <mrt/object-impl.h>
 
-MRT_BEGIN_CDECLS
+M_BEGIN_CDECLS
 
-#define MRT_LIST_LINK(v) ((MRT_ListLink*)(v))
-#define MRT_LIST_LINK_CLASS(c) ((MRT_ListLinkClass*)(c))
-#define MRT_IS_LIST_LINK(v) mrt_object_is_instance(mrt_list_link_class(), MRT_OBJECT(v))
+#define M_LIST_LINK(v) ((MListLink*)(v))
+#define M_LIST_LINK_CLASS(c) ((MListLinkClass*)(c))
+#define M_IS_LIST_LINK(v) m_object_is_instance(m_list_link_class(), M_OBJECT(v))
 
-typedef struct MRT_ListLink MRT_ListLink;
-typedef struct MRT_ListLinkClass MRT_ListLinkClass;
+typedef struct MListLink MListLink;
+typedef struct MListLinkClass MListLinkClass;
 
-struct MRT_ListLink
+struct MListLink
 {
-  MRT_Object base_;
-  MRT_Object *obj;
-  MRT_ListLink *prev;
-  MRT_ListLink *next;
+  MObject base_;
+  MObject *obj;
+  MListLink *prev;
+  MListLink *next;
 };
 
-struct MRT_ListLinkClass
+struct MListLinkClass
 {
-  MRT_ObjectClass base_;
+  MObjectClass base_;
 };
 
-const MRT_ObjectClass *mrt_list_link_class(void);
+const MObjectClass *m_list_link_class(void);
 
-MRT_ListLink *mrt_list_link_new(MRT_Object *obj,
-  MRT_ListLink *prev, MRT_ListLink *next);
+MListLink *m_list_link_new(MObject *obj,
+  MListLink *prev, MListLink *next);
 
-MRT_Object *mrt_list_link_get_obj(MRT_ListLink *link);
-void mrt_list_link_set_obj(MRT_ListLink *link, MRT_Object *obj);
+MObject *m_list_link_get_obj(MListLink *link);
+void m_list_link_set_obj(MListLink *link, MObject *obj);
 
-MRT_ListLink *mrt_list_link_prev(MRT_ListLink *link);
-MRT_ListLink *mrt_list_link_next(MRT_ListLink *link);
+MListLink *m_list_link_prev(MListLink *link);
+MListLink *m_list_link_next(MListLink *link);
 
-MRT_END_CDECLS
+M_END_CDECLS
 
-#endif // MRT_LIST_LINK_H
+#endif // M_LIST_LINK_H
