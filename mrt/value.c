@@ -173,15 +173,16 @@ MRT_Value *mrt_value_unref(MRT_Value *value)
   uint32_t old_val, new_val;
   MRT_Value *ret_value;
   mrt_return_val_if_fail(MRT_IS_VALUE(value), NULL);
-  old_val = value->ref_count;
   ret_value = value;
-  if (old_val <= 1) {
-    mrt_value_destruct(value);
-    ret_value = NULL;
-  } else {
-    do { new_val = old_val - 1; }
-    while (!mrt_atomic_cas32(&(value->ref_count), old_val, new_val));
-  }
+  do {
+    old_val = value->ref_count;
+    if (old_val <= 1) {
+      mrt_value_destruct(value);
+      ret_value = NULL;
+      break;
+    }
+    new_val = old_val - 1;
+  } while (!mrt_atomic_cas32(&(value->ref_count), old_val, new_val));
   return ret_value;
 }
 
