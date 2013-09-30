@@ -32,7 +32,6 @@
 
 typedef struct
 {
-  MRT_AllocatorAllocFunc alloc;
   MRT_AllocatorReallocFunc realloc;
   MRT_AllocationFreeFunc free;
 }
@@ -41,54 +40,36 @@ MRT_Allocator;
 typedef size_t MRT_MemHeader;
 
 #define PTR_TO_HDR(ptr) (((MRT_MemHeader*)(ptr)) - 1)
-#define HDR_TO_PTR(hdr) ((void*)(((MRT_MemHeader*)(ptr)) + 1))
+#define HDR_TO_PTR(hdr) ((void*)(((MRT_MemHeader*)(hdr)) + 1))
 
-#define MRT_DEFAULT_ALLOC malloc
 #define MRT_DEFAULT_REALLOC realloc
 #define MRT_DEFAULT_FREE free
 
 static MRT_Allocator mrt_allocator = {
-  MRT_DEFAULT_ALLOC,
   MRT_DEFAULT_REALLOC,
   MRT_DEFAULT_FREE
 };
 
-void mrt_set_allocator(MRT_AllocatorAllocFunc alloc_fn,
-  MRT_AllocatorReallocFunc realloc_fn, MRT_AllocationFreeFunc free_fn)
+bool mrt_set_allocator(MRT_AllocatorReallocFunc realloc_fn,
+  MRT_AllocationFreeFunc free_fn)
 {
-  if (!alloc_fn && !realloc_fn && !free_fn) {
-    mrt_allocator.alloc = MRT_DEFAULT_ALLOC;
+  if (!realloc_fn && !free_fn) {
     mrt_allocator.realloc = MRT_DEFAULT_REALLOC;
     mrt_allocator.free = MRT_DEFAULT_FREE;
-  } else if (alloc_fn && realloc_fn && free_fn) {
-    mrt_allocator.alloc = alloc_fn;
+    return true;
+  } else if (realloc_fn && free_fn) {
     mrt_allocator.realloc = realloc_fn;
     mrt_allocator.free = free_fn;
+    return true;
   } else {
-#ifndef NDEBUG
+#if 0
     fprintf(stderr,
            "Invalid arguments to `mrt_set_allocator()`, "
            "all arguments must either be `NULL' or they all "
            "must not be `NULL'. Not changing.\n");
 #endif
+    return false;
   }
-}
-
-void *mrt_malloc(size_t sz)
-{
-  void *ptr;
-  if (sz == 0)
-    return NULL;
-  ptr = mrt_allocator.alloc(sz + sizeof(MRT_MemHeader));
-  if (ptr) {
-    MRT_MemHeader *hdr = ptr;
-    *hdr = sz;
-    ptr = HDR_TO_PTR(hdr);
-    mrt_memclear(ptr);
-    printf("Allocated '%lu' bytes\n", sz);
-    return ptr;
-  }
-  return NULL;
 }
 
 void *mrt_realloc(void *ptr, size_t sz)
@@ -96,23 +77,37 @@ void *mrt_realloc(void *ptr, size_t sz)
   size_t old_sz;
   MRT_MemHeader *hdr;
   void *temp;
-  if (!ptr)
-    return mrt_malloc(sz);
+
+  // Resize to 0 means free()
   if (sz == 0) {
     mrt_free(ptr);
     return NULL;
   }
-  hdr = PTR_TO_HDR(ptr);
-  old_sz = *hdr;
+
+  // If ptr is NULL it's just like malloc()
+  if (ptr != NULL) {
+    hdr = PTR_TO_HDR(ptr);
+    old_sz = *hdr;
+  } else {
+    hdr = NULL;
+    old_sz = 0;
+  }
+
+  // Bail out if can't allocate sz (plus header size)
   temp = mrt_allocator.realloc(hdr, sz + sizeof(MRT_MemHeader));
-  if (!temp)
+  if (temp == NULL)
     return NULL;
+
   hdr = temp;
   *hdr = sz;
   ptr = HDR_TO_PTR(hdr);
+
+  // Clear out additional bytes added, if any
   if (sz > old_sz)
-    memset(ptr + old_sz, 0, sz - old_sz);
-  printf("Reallocated '%lu' bytes to '%lu' bytes\n", old_sz, sz);
+    mrt_memclear_range(ptr, old_sz, (sz - old_sz));
+
+  //printf("Reallocated '%lu' bytes to '%lu' bytes\n", old_sz, sz);
+
   return ptr;
 }
 
@@ -131,13 +126,18 @@ size_t mrt_memsize(void *ptr)
   return *PTR_TO_HDR(ptr);
 }
 
-void mrt_zerofill(void *ptr, size_t start, size_t len)
+void mrt_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte)
 {
+  size_t mem_size;
   if (!ptr)
     return;
+  mem_size = *PTR_TO_HDR(ptr);
   if (len == (size_t)-1)
-    len = *PTR_TO_HDR(ptr) - start;
-  memset(ptr + start, 0, len);
+    len = mem_size - start;
+  // Safety bounds checks
+  if ((start+len) > mem_size)
+    return;
+  memset(((uint8_t*)ptr) + start, byte, len);
 }
 
 void *mrt_memdup(void *ptr)
