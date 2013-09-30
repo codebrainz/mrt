@@ -13,7 +13,7 @@ typedef struct MRT_CharClass MRT_CharClass;
 struct MRT_Char
 {
   MRT_Number base_;
-  uint32_t value;
+  uint32_t obj;
 };
 
 struct MRT_CharClass

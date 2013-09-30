@@ -2,21 +2,21 @@
 #include <mrt/string-impl.h>
 #include <mrt/char.h>
 
-static void mrt_string_iter_ctor(MRT_Value *value, va_list ap)
+static void mrt_string_iter_ctor(MRT_Object *obj, va_list ap)
 {
-  MRT_StringIter *iter = MRT_STRING_ITER(value);
+  MRT_StringIter *iter = MRT_STRING_ITER(obj);
   MRT_Seq *seq = va_arg(ap, MRT_Seq*);
-  MRT_SEQ_ITER(iter)->seq = MRT_SEQ(mrt_value_ref(MRT_VALUE(seq)));
+  MRT_SEQ_ITER(iter)->seq = MRT_SEQ(mrt_object_ref(MRT_OBJECT(seq)));
   iter->index = va_arg(ap, long);
 }
 
-static void mrt_string_iter_dtor(MRT_Value *value)
+static void mrt_string_iter_dtor(MRT_Object *obj)
 {
-  mrt_value_unref(MRT_VALUE(MRT_SEQ_ITER(value)->seq));
-  MRT_STRING_ITER(value)->index = 0;
+  mrt_object_unref(MRT_OBJECT(MRT_SEQ_ITER(obj)->seq));
+  MRT_STRING_ITER(obj)->index = 0;
 }
 
-static MRT_Value *mrt_string_iter_prev(MRT_SeqIter *seq_it)
+static MRT_Object *mrt_string_iter_prev(MRT_SeqIter *seq_it)
 {
   MRT_StringIter *it = MRT_STRING_ITER(seq_it);
   MRT_String *str;
@@ -30,7 +30,7 @@ static MRT_Value *mrt_string_iter_prev(MRT_SeqIter *seq_it)
   return mrt_char_new(str->str[it->index]);
 }
 
-static MRT_Value *mrt_string_iter_next(MRT_SeqIter *seq_it)
+static MRT_Object *mrt_string_iter_next(MRT_SeqIter *seq_it)
 {
   MRT_StringIter *it = MRT_STRING_ITER(seq_it);
   MRT_String *str;
@@ -46,13 +46,13 @@ static MRT_Value *mrt_string_iter_next(MRT_SeqIter *seq_it)
 
 MRT_SeqIter *mrt_string_iter_new(MRT_String *str, long index)
 {
-  return MRT_SEQ_ITER(mrt_value_construct(mrt_string_iter_class(), NULL, str, index));
+  return MRT_SEQ_ITER(mrt_object_construct(mrt_string_iter_class(), NULL, str, index));
 }
 
 MRT_BEGIN_CLASS_DEF(MRT_StringIter, string_iter, mrt_seq_iter_class())
 {
-  MRT_SET_FIELD(MRT_ValueClass, ctor, mrt_string_iter_ctor);
-  MRT_SET_FIELD(MRT_ValueClass, dtor, mrt_string_iter_dtor);
+  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_string_iter_ctor);
+  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_string_iter_dtor);
   MRT_SET_FIELD(MRT_SeqIterClass, prev, mrt_string_iter_prev);
   MRT_SET_FIELD(MRT_SeqIterClass, next, mrt_string_iter_next);
 }

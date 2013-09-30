@@ -56,7 +56,7 @@
 MRT_BEGIN_CDECLS
 
 /** One higher than the maximum amount of memory that can be allocated.
- * used as a special value where size_t is passed/returned. */
+ * used as a special obj where size_t is passed/returned. */
 #define MRT_SIZE_MAX ((size_t)-1)
 
 /**

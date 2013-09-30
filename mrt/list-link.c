@@ -25,38 +25,38 @@
 #include <mrt/list-link-impl.h>
 #include <mrt/memory.h>
 
-static void mrt_list_link_ctor(MRT_Value *value, va_list ap)
+static void mrt_list_link_ctor(MRT_Object *obj, va_list ap)
 {
-  MRT_ListLink *link = MRT_LIST_LINK(value);
-  link->value = mrt_value_ref_sync(va_arg(ap, MRT_Value*));
+  MRT_ListLink *link = MRT_LIST_LINK(obj);
+  link->obj = mrt_object_ref_sync(va_arg(ap, MRT_Object*));
   link->prev = va_arg(ap, MRT_ListLink*);
   link->next = va_arg(ap, MRT_ListLink*);
 }
 
-static void mrt_list_link_dtor(MRT_Value *value)
+static void mrt_list_link_dtor(MRT_Object *obj)
 {
-  mrt_value_unref(MRT_LIST_LINK(value)->value);
+  mrt_object_unref(MRT_LIST_LINK(obj)->obj);
 }
 
-MRT_ListLink *mrt_list_link_new(MRT_Value *value, MRT_ListLink *prev,
+MRT_ListLink *mrt_list_link_new(MRT_Object *obj, MRT_ListLink *prev,
   MRT_ListLink *next)
 {
-  MRT_Value *val = mrt_value_construct(mrt_list_link_class(), value, prev, next);
+  MRT_Object *val = mrt_object_construct(mrt_list_link_class(), obj, prev, next);
   mrt_return_val_if_fail(MRT_IS_LIST_LINK(val), NULL);
   return MRT_LIST_LINK(val);
 }
 
-MRT_Value *mrt_list_link_get_value(MRT_ListLink *link)
+MRT_Object *mrt_list_link_get_obj(MRT_ListLink *link)
 {
   mrt_return_val_if_fail(MRT_IS_LIST_LINK(link), NULL);
-  return link->value;
+  return link->obj;
 }
 
-void mrt_list_link_set_value(MRT_ListLink *link, MRT_Value *value)
+void mrt_list_link_set_obj(MRT_ListLink *link, MRT_Object *obj)
 {
   mrt_return_if_fail(MRT_IS_LIST_LINK(link));
-  mrt_value_unref(link->value);
-  link->value = mrt_value_ref_sync(value);
+  mrt_object_unref(link->obj);
+  link->obj = mrt_object_ref_sync(obj);
 }
 
 MRT_ListLink *mrt_list_link_prev(MRT_ListLink *link)
@@ -71,9 +71,9 @@ MRT_ListLink *mrt_list_link_next(MRT_ListLink *link)
   return link->next;
 }
 
-MRT_BEGIN_CLASS_DEF(MRT_ListLink, list_link, mrt_value_class())
+MRT_BEGIN_CLASS_DEF(MRT_ListLink, list_link, mrt_object_class())
 {
-  MRT_SET_FIELD(MRT_ValueClass, ctor, mrt_list_link_ctor);
-  MRT_SET_FIELD(MRT_ValueClass, dtor, mrt_list_link_dtor);
+  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_list_link_ctor);
+  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_list_link_dtor);
 }
 MRT_END_CLASS_DEF

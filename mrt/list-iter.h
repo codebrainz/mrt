@@ -25,16 +25,16 @@
 #ifndef MRT_LIST_ITER_H
 #define MRT_LIST_ITER_H
 
-#include <mrt/value.h>
+#include <mrt/object.h>
 
 MRT_BEGIN_CDECLS
 
 typedef struct MRT_ListIter MRT_ListIter;
 
 #define MRT_LIST_ITER(v) ((MRT_ListIter*)(v))
-#define MRT_IS_LIST_ITER(v) mrt_value_is_instance(mrt_list_iter_class(), MRT_VALUE(v))
+#define MRT_IS_LIST_ITER(v) mrt_object_is_instance(mrt_list_iter_class(), MRT_OBJECT(v))
 
-const MRT_ValueClass *mrt_list_iter_class(void);
+const MRT_ObjectClass *mrt_list_iter_class(void);
 
 MRT_END_CDECLS
 

@@ -2,7 +2,7 @@
 #define MRT_NONE_IMPL_H
 
 #include <mrt/none.h>
-#include <mrt/value-impl.h>
+#include <mrt/object-impl.h>
 
 MRT_BEGIN_CDECLS
 
@@ -12,12 +12,12 @@ typedef struct MRT_NoneClass MRT_NoneClass;
 
 struct MRT_None
 {
-  MRT_Value base_;
+  MRT_Object base_;
 };
 
 struct MRT_NoneClass
 {
-  MRT_ValueClass base_;
+  MRT_ObjectClass base_;
 };
 
 MRT_END_CDECLS

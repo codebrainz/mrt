@@ -25,7 +25,7 @@
 #ifndef MRT_LIST_ITER_IMPL_H
 #define MRT_LIST_ITER_IMPL_H
 
-#include <mrt/value-impl.h>
+#include <mrt/object-impl.h>
 #include <mrt/sequence-iter-impl.h>
 #include <mrt/list-iter.h>
 #include <mrt/list-link-impl.h>

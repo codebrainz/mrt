@@ -27,7 +27,7 @@
 
 #include <mrt/macros.h>
 #include <mrt/sequence-iter.h>
-#include <mrt/value-impl.h>
+#include <mrt/object-impl.h>
 
 MRT_BEGIN_CDECLS
 
@@ -37,16 +37,16 @@ typedef struct MRT_SeqIterClass MRT_SeqIterClass;
 
 struct MRT_SeqIter
 {
-  MRT_Value base_;
+  MRT_Object base_;
   MRT_Seq *seq;
 };
 
-typedef MRT_Value* (*MRT_SeqIterNextFunc)(MRT_SeqIter*);
-typedef MRT_Value* (*MRT_SeqIterPrevFunc)(MRT_SeqIter*);
+typedef MRT_Object* (*MRT_SeqIterNextFunc)(MRT_SeqIter*);
+typedef MRT_Object* (*MRT_SeqIterPrevFunc)(MRT_SeqIter*);
 
 struct MRT_SeqIterClass
 {
-  MRT_ValueClass base_;
+  MRT_ObjectClass base_;
   MRT_SeqIterPrevFunc prev;
   MRT_SeqIterNextFunc next;
 };

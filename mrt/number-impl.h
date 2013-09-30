@@ -2,7 +2,7 @@
 #define MRT_NUMBER_IMPL_H
 
 #include <mrt/number.h>
-#include <mrt/value-impl.h>
+#include <mrt/object-impl.h>
 
 MRT_BEGIN_CDECLS
 
@@ -12,12 +12,12 @@ typedef struct MRT_NumberClass MRT_NumberClass;
 
 struct MRT_Number
 {
-  MRT_Value base_;
+  MRT_Object base_;
 };
 
 struct MRT_NumberClass
 {
-  MRT_ValueClass base_;
+  MRT_ObjectClass base_;
 };
 
 MRT_END_CDECLS

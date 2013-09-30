@@ -3,7 +3,7 @@
 
 void test_mrt_none(CuTest *tc)
 {
-  MRT_Value *none1, *none2;
+  MRT_Object *none1, *none2;
 
   none1 = mrt_none();
   CuAssertPtrNotNull(tc, none1);
@@ -16,8 +16,8 @@ void test_mrt_none(CuTest *tc)
 
   CuAssertPtrEquals(tc, none1, none2);
 
-  mrt_value_unref(MRT_VALUE(none1));
-  mrt_value_unref(MRT_VALUE(none2));
+  mrt_object_unref(MRT_OBJECT(none1));
+  mrt_object_unref(MRT_OBJECT(none2));
 }
 
 CuSuite* mrt_none_get_test_suite(void)

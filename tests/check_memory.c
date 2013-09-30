@@ -61,7 +61,7 @@ void test_mrt_realloc(CuTest *tc)
   for (i = 0; i < size; i++)
     bytes[i] = UINT8_MAX;
 
-  // That each byte hold the value just set
+  // That each byte hold the object just set
   for (i = 0; i < size; i++)
     CuAssertIntEquals(tc, UINT8_MAX, bytes[i]);
 
@@ -75,7 +75,7 @@ void test_mrt_realloc(CuTest *tc)
   chunk = chunk2;
   bytes = (uint8_t*) chunk;
 
-  // That each byte hold the value just set before the resize
+  // That each byte hold the object just set before the resize
   for (i = 0; i < size; i++)
     CuAssertIntEquals(tc, UINT8_MAX, bytes[i]);
 
@@ -87,7 +87,7 @@ void test_mrt_realloc(CuTest *tc)
 
   size = size2;
 
-  // That each byte now holds the value expected
+  // That each byte now holds the object expected
   for (i = 0; i < size; i++)
     CuAssertIntEquals(tc, UINT8_MAX, bytes[i]);
 
@@ -100,7 +100,7 @@ void test_mrt_realloc(CuTest *tc)
   CuAssertIntEquals(tc, size2, mrt_memsize(chunk));
   size = size2;
 
-  // That each byte still holds the value expected
+  // That each byte still holds the object expected
   for (i = 0; i < size; i++)
     CuAssertIntEquals(tc, UINT8_MAX, bytes[i]);
 
@@ -163,7 +163,7 @@ void test_mrt_memfill_range(CuTest *tc)
       CuAssertIntEquals(tc, UINT8_MAX, bytes[i]);
   }
 
-  // check it doesn't crash with out of range values
+  // check it doesn't crash with out of range objects
   mrt_memfill_range(chunk, size+20, 1, 0);
   mrt_memfill_range(chunk, 0, (size * 2), 0);
   mrt_memfill_range(chunk, 1, size, 0);

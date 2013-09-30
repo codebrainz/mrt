@@ -6,7 +6,7 @@ void test_mrt_string(CuTest *tc)
 {
   (void)tc;
 #if 0 // FIXME
-  MRT_Value *str;
+  MRT_Object *str;
 
   str = mrt_string_new("Hello");
   CuAssertTrue(tc, MRT_IS_STRING(str));
@@ -17,7 +17,7 @@ void test_mrt_string(CuTest *tc)
   CuAssertIntEquals(tc, mrt_strlen("Hello World"), mrt_string_length(MRT_STRING(str)));
   CuAssertStrEquals(tc, "Hello World", mrt_string_get(MRT_STRING(str)));
 
-  mrt_value_unref(str);
+  mrt_object_unref(str);
 #endif
 }
 

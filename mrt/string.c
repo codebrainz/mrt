@@ -3,23 +3,23 @@
 #include <mrt/string-iter-impl.h>
 #include <mrt/char.h>
 
-static void mrt_string_ctor(MRT_Value *value, va_list ap)
+static void mrt_string_ctor(MRT_Object *obj, va_list ap)
 {
-  MRT_String *str = MRT_STRING(value);
+  MRT_String *str = MRT_STRING(obj);
   (void)ap;
   str->len = 0;
   str->str = mrt_calloc(1, sizeof(uint32_t));
 }
 
-static void mrt_string_dtor(MRT_Value *value)
+static void mrt_string_dtor(MRT_Object *obj)
 {
-  MRT_String *str = MRT_STRING(value);
+  MRT_String *str = MRT_STRING(obj);
   str->len = 0;
   mrt_free(str->str);
   str->str = NULL;
 }
 
-static MRT_Value *mrt_string_get(MRT_Seq *seq, va_list ap)
+static MRT_Object *mrt_string_get(MRT_Seq *seq, va_list ap)
 {
   MRT_String *str = MRT_STRING(seq);
   uint32_t index = va_arg(ap, uint32_t);
@@ -100,9 +100,9 @@ static MRT_SeqIter *mrt_string_last(MRT_Seq *seq)
   return mrt_string_iter_new(str, str->len);
 }
 
-MRT_Value *mrt_string_new(void)
+MRT_Object *mrt_string_new(void)
 {
-  return mrt_value_construct(mrt_string_class(), NULL);
+  return mrt_object_construct(mrt_string_class(), NULL);
 }
 
 char *mrt_string_to_utf8(MRT_String *str)
@@ -125,8 +125,8 @@ void mrt_string_assign_utf8(MRT_String *str, const char *s)
 
 MRT_BEGIN_CLASS_DEF(MRT_String, string, mrt_seq_class())
 {
-  MRT_SET_FIELD(MRT_ValueClass, ctor, mrt_string_ctor);
-  MRT_SET_FIELD(MRT_ValueClass, dtor, mrt_string_dtor);
+  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_string_ctor);
+  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_string_dtor);
   MRT_SET_FIELD(MRT_SeqClass, get, mrt_string_get);
   MRT_SET_FIELD(MRT_SeqClass, set, mrt_string_set);
   MRT_SET_FIELD(MRT_SeqClass, add, mrt_string_add);

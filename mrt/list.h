@@ -30,11 +30,11 @@
 MRT_BEGIN_CDECLS
 
 #define MRT_LIST(v) ((MRT_List*)(v))
-#define MRT_IS_LIST(v) mrt_value_is_instance(mrt_list_class(), MRT_VALUE(v))
+#define MRT_IS_LIST(v) mrt_object_is_instance(mrt_list_class(), MRT_OBJECT(v))
 
 typedef struct MRT_List MRT_List;
 
-const MRT_ValueClass *mrt_list_class();
+const MRT_ObjectClass *mrt_list_class();
 
 MRT_Seq *mrt_list_new(void);
 

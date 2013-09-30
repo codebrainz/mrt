@@ -25,21 +25,21 @@
 #ifndef MRT_SEQUENCE_ITER_H
 #define MRT_SEQUENCE_ITER_H
 
-#include <mrt/value.h>
+#include <mrt/object.h>
 #include <mrt/sequence.h>
 
 MRT_BEGIN_CDECLS
 
 #define MRT_SEQ_ITER(v) ((MRT_SeqIter*)(v))
-#define MRT_IS_SEQ_ITER(v) mrt_value_is_instance(mrt_seq_iter_class(), MRT_VALUE(v))
+#define MRT_IS_SEQ_ITER(v) mrt_object_is_instance(mrt_seq_iter_class(), MRT_OBJECT(v))
 
 typedef struct MRT_SeqIter MRT_SeqIter;
 
-const MRT_ValueClass *mrt_seq_iter_class(void);
+const MRT_ObjectClass *mrt_seq_iter_class(void);
 
 struct MRT_Seq *seq_iter_get_seq(MRT_SeqIter*);
-MRT_Value *seq_iter_prev(MRT_SeqIter*);
-MRT_Value *seq_iter_next(MRT_SeqIter*);
+MRT_Object *seq_iter_prev(MRT_SeqIter*);
+MRT_Object *seq_iter_next(MRT_SeqIter*);
 
 MRT_END_CDECLS
 

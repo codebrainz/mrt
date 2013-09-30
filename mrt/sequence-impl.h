@@ -25,7 +25,7 @@
 #ifndef MRT_SEQUENCE_IMPL_H
 #define MRT_SEQUENCE_IMPL_H
 
-#include <mrt/value-impl.h>
+#include <mrt/object-impl.h>
 #include <mrt/sequence.h>
 #include <stdarg.h>
 
@@ -37,10 +37,10 @@ typedef struct MRT_SeqClass MRT_SeqClass;
 
 struct MRT_Seq
 {
-  MRT_Value base_;
+  MRT_Object base_;
 };
 
-typedef MRT_Value* (*MRT_SeqGetFunc)(MRT_Seq*, va_list);
+typedef MRT_Object* (*MRT_SeqGetFunc)(MRT_Seq*, va_list);
 typedef bool (*MRT_SeqSetFunc)(MRT_Seq*, va_list);
 typedef bool (*MRT_SeqAddFunc)(MRT_Seq*, va_list);
 typedef bool (*MRT_SeqDelFunc)(MRT_Seq*, va_list);
@@ -50,7 +50,7 @@ typedef MRT_SeqIter* (*MRT_SeqIterLast)(MRT_Seq*);
 
 struct MRT_SeqClass
 {
-  MRT_ValueClass base_;
+  MRT_ObjectClass base_;
   MRT_SeqGetFunc get;
   MRT_SeqSetFunc set;
   MRT_SeqAddFunc add;

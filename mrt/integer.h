@@ -6,13 +6,13 @@
 MRT_BEGIN_CDECLS
 
 #define MRT_INTEGER(v) ((MRT_Integer*)(v))
-#define MRT_IS_INTEGER(v) mrt_value_is_instance(mrt_integer_class(), MRT_VALUE(v))
+#define MRT_IS_INTEGER(v) mrt_object_is_instance(mrt_integer_class(), MRT_OBJECT(v))
 
 typedef struct MRT_Integer MRT_Integer;
 
-const MRT_ValueClass *mrt_integer_class(void);
+const MRT_ObjectClass *mrt_integer_class(void);
 
-MRT_Value *mrt_integer_new(int64_t val);
+MRT_Object *mrt_integer_new(int64_t val);
 int64_t mrt_integer_get(MRT_Integer *i);
 void mrt_integer_set(MRT_Integer *i, int64_t val);
 

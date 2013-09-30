@@ -31,20 +31,20 @@ MRT_Seq *seq_iter_get_seq(MRT_SeqIter *seq_iter)
   return seq_iter->seq;
 }
 
-MRT_Value *seq_iter_prev(MRT_SeqIter *seq_iter)
+MRT_Object *seq_iter_prev(MRT_SeqIter *seq_iter)
 {
   mrt_return_val_if_fail(seq_iter, NULL);
-  if (MRT_SEQ_ITER_CLASS(MRT_VALUE(seq_iter)->class_)->prev)
-    return MRT_SEQ_ITER_CLASS(MRT_VALUE(seq_iter)->class_)->prev(seq_iter);
+  if (MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->prev)
+    return MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->prev(seq_iter);
   return NULL;
 }
 
-MRT_Value *seq_iter_next(MRT_SeqIter *seq_iter)
+MRT_Object *seq_iter_next(MRT_SeqIter *seq_iter)
 {
   mrt_return_val_if_fail(seq_iter, NULL);
-  if (MRT_SEQ_ITER_CLASS(MRT_VALUE(seq_iter)->class_)->next)
-    return MRT_SEQ_ITER_CLASS(MRT_VALUE(seq_iter)->class_)->next(seq_iter);
+  if (MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->next)
+    return MRT_SEQ_ITER_CLASS(MRT_OBJECT(seq_iter)->class_)->next(seq_iter);
   return NULL;
 }
 
-MRT_ABSTRACT_CLASS_DEF(MRT_SeqIter, seq_iter, mrt_value_class())
+MRT_ABSTRACT_CLASS_DEF(MRT_SeqIter, seq_iter, mrt_object_class())

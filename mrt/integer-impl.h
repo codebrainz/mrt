@@ -11,7 +11,7 @@ typedef struct MRT_IntegerClass MRT_IntegerClass;
 struct MRT_Integer
 {
   MRT_Number base_;
-  int64_t value;
+  int64_t obj;
 };
 
 struct MRT_IntegerClass

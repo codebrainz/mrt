@@ -7,29 +7,29 @@ static MRT_Boolean false_singleton;
 static inline void mrt_boolean_once_init(void)
 {
   if (!boolean_singletons_initialized) {
-    mrt_value_construct(mrt_boolean_class(), MRT_VALUE(&true_singleton));
-    mrt_value_ref_sync(MRT_VALUE(&true_singleton));
-    mrt_value_construct(mrt_boolean_class(), MRT_VALUE(&false_singleton));
-    mrt_value_ref_sync(MRT_VALUE(&false_singleton));
+    mrt_object_construct(mrt_boolean_class(), MRT_OBJECT(&true_singleton));
+    mrt_object_ref_sync(MRT_OBJECT(&true_singleton));
+    mrt_object_construct(mrt_boolean_class(), MRT_OBJECT(&false_singleton));
+    mrt_object_ref_sync(MRT_OBJECT(&false_singleton));
     boolean_singletons_initialized = true;
   }
 }
 
-MRT_Value *mrt_boolean_true(void)
+MRT_Object *mrt_boolean_true(void)
 {
   mrt_boolean_once_init();
-  return MRT_VALUE(&true_singleton);
+  return MRT_OBJECT(&true_singleton);
 }
 
-MRT_Value *mrt_boolean_false(void)
+MRT_Object *mrt_boolean_false(void)
 {
   mrt_boolean_once_init();
-  return MRT_VALUE(&false_singleton);
+  return MRT_OBJECT(&false_singleton);
 }
 
-MRT_Value *mrt_boolean_new(bool val)
+MRT_Object *mrt_boolean_new(bool val)
 {
-  return val ? mrt_value_ref(mrt_boolean_true()) : mrt_value_ref(mrt_boolean_false());
+  return val ? mrt_object_ref(mrt_boolean_true()) : mrt_object_ref(mrt_boolean_false());
 }
 
 bool mrt_boolean_get(MRT_Boolean *b)

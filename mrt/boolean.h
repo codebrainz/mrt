@@ -6,16 +6,16 @@
 MRT_BEGIN_CDECLS
 
 #define MRT_BOOLEAN(v) ((MRT_Boolean*)(v))
-#define MRT_IS_BOOLEAN(v) mrt_value_is_instance(mrt_boolean_class(), MRT_VALUE(v))
+#define MRT_IS_BOOLEAN(v) mrt_object_is_instance(mrt_boolean_class(), MRT_OBJECT(v))
 
 typedef struct MRT_Boolean MRT_Boolean;
 
-const MRT_ValueClass *mrt_boolean_class(void);
+const MRT_ObjectClass *mrt_boolean_class(void);
 
-MRT_Value *mrt_boolean_true(void);
-MRT_Value *mrt_boolean_false(void);
+MRT_Object *mrt_boolean_true(void);
+MRT_Object *mrt_boolean_false(void);
 
-MRT_Value *mrt_boolean_new(bool val);
+MRT_Object *mrt_boolean_new(bool val);
 
 bool mrt_boolean_get(MRT_Boolean *b);
 

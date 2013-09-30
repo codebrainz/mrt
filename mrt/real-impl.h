@@ -13,7 +13,7 @@ typedef struct MRT_RealClass MRT_RealClass;
 struct MRT_Real
 {
   MRT_Number base_;
-  double value;
+  double obj;
 };
 
 struct MRT_RealClass

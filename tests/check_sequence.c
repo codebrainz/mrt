@@ -5,7 +5,7 @@ MAKE_TEST_FUNC(get)
 {
 #if 0
   MRT_Seq *s;
-  MRT_Value *v_in, *v_out;
+  MRT_Object *v_in, *v_out;
 
   s = mrt_list_new();
 
@@ -17,8 +17,8 @@ MAKE_TEST_FUNC(get)
 
 
 
-  mrt_value_unref(v_in);
-  mrt_value_unref(MRT_VALUE(s));
+  mrt_object_unref(v_in);
+  mrt_object_unref(MRT_OBJECT(s));
 #endif
   (void)tc;
 }

@@ -30,48 +30,48 @@ MRT_ListIter *mrt_list_iter_new(MRT_List *list, MRT_ListLink *link)
 {
   mrt_return_val_if_fail(MRT_IS_LIST(list), NULL);
   mrt_return_val_if_fail(link, NULL);
-  return MRT_LIST_ITER(mrt_value_construct(mrt_list_iter_class(),
+  return MRT_LIST_ITER(mrt_object_construct(mrt_list_iter_class(),
     NULL, list, link));
 }
 
-static void mrt_list_iter_ctor(MRT_Value *value, va_list ap)
+static void mrt_list_iter_ctor(MRT_Object *obj, va_list ap)
 {
-  MRT_ListIter *iter = MRT_LIST_ITER(value);
+  MRT_ListIter *iter = MRT_LIST_ITER(obj);
   MRT_List *list = va_arg(ap, MRT_List*);
   MRT_ListLink *link = va_arg(ap, MRT_ListLink*);
   MRT_SEQ_ITER(iter)->seq =
-    MRT_SEQ(mrt_value_ref(MRT_VALUE(list)));
+    MRT_SEQ(mrt_object_ref(MRT_OBJECT(list)));
   iter->link = link;
 }
 
-static void mrt_list_iter_dtor(MRT_Value *value)
+static void mrt_list_iter_dtor(MRT_Object *obj)
 {
-  //MRT_ListIter *iter = MRT_LIST_ITER(value);
-  (void)value;
+  //MRT_ListIter *iter = MRT_LIST_ITER(obj);
+  (void)obj;
 }
 
-static MRT_Value *mrt_list_iter_prev(MRT_SeqIter *iter)
+static MRT_Object *mrt_list_iter_prev(MRT_SeqIter *iter)
 {
   MRT_ListIter *list_iter = MRT_LIST_ITER(iter);
   if (list_iter == NULL || list_iter->link == NULL)
     return NULL;
   list_iter->link = list_iter->link->prev;
-  return list_iter->link->value;
+  return list_iter->link->obj;
 }
 
-static MRT_Value *mrt_list_iter_next(MRT_SeqIter *iter)
+static MRT_Object *mrt_list_iter_next(MRT_SeqIter *iter)
 {
   MRT_ListIter *list_iter = MRT_LIST_ITER(iter);
   if (list_iter == NULL || list_iter->link == NULL)
     return NULL;
   list_iter->link = list_iter->link->next;
-  return list_iter->link->value;
+  return list_iter->link->obj;
 }
 
 MRT_BEGIN_CLASS_DEF(MRT_ListIter, list_iter, mrt_seq_iter_class())
 {
-  MRT_SET_FIELD(MRT_ValueClass, ctor, mrt_list_iter_ctor);
-  MRT_SET_FIELD(MRT_ValueClass, dtor, mrt_list_iter_dtor);
+  MRT_SET_FIELD(MRT_ObjectClass, ctor, mrt_list_iter_ctor);
+  MRT_SET_FIELD(MRT_ObjectClass, dtor, mrt_list_iter_dtor);
   MRT_SET_FIELD(MRT_SeqIterClass, prev, mrt_list_iter_prev);
   MRT_SET_FIELD(MRT_SeqIterClass, next, mrt_list_iter_next);
 }

@@ -25,27 +25,27 @@
 #include <mrt/sequence-impl.h>
 #include <mrt/memory.h>
 
-MRT_Value *mrt_seq_get(MRT_Seq *seq, ...)
+MRT_Object *mrt_seq_get(MRT_Seq *seq, ...)
 {
-  MRT_Value *value = NULL;
+  MRT_Object *obj = NULL;
   mrt_return_val_if_fail(MRT_IS_SEQ(seq), NULL);
-  if (MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->get) {
+  if (MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->get) {
     va_list ap;
     va_start(ap, seq);
-    value = MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->get(seq, ap);
+    obj = MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->get(seq, ap);
     va_end(ap);
   }
-  return value;
+  return obj;
 }
 
 bool mrt_seq_set(MRT_Seq *seq, ...)
 {
   bool result = false;
   mrt_return_val_if_fail(MRT_IS_SEQ(seq), false);
-  if (MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->set) {
+  if (MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->set) {
     va_list ap;
     va_start(ap, seq);
-    result = MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->set(seq, ap);
+    result = MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->set(seq, ap);
     va_end(ap);
   }
   return result;
@@ -55,10 +55,10 @@ bool mrt_seq_add(MRT_Seq *seq, ...)
 {
   bool result = false;
   mrt_return_val_if_fail(MRT_IS_SEQ(seq), false);
-  if (MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->add) {
+  if (MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->add) {
     va_list ap;
     va_start(ap, seq);
-    result = MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->add(seq, ap);
+    result = MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->add(seq, ap);
     va_end(ap);
   }
   return result;
@@ -68,10 +68,10 @@ bool mrt_seq_del(MRT_Seq *seq, ...)
 {
   bool result = false;
   mrt_return_val_if_fail(MRT_IS_SEQ(seq), false);
-  if (MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->del) {
+  if (MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->del) {
     va_list ap;
     va_start(ap, seq);
-    result = MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->del(seq, ap);
+    result = MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->del(seq, ap);
     va_end(ap);
   }
   return result;
@@ -81,9 +81,9 @@ uint32_t mrt_seq_size(MRT_Seq *seq)
 {
   uint32_t result = 0;
   mrt_return_val_if_fail(MRT_IS_SEQ(seq), 0);
-  if (MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->size)
-    result = MRT_SEQ_CLASS(MRT_VALUE(seq)->class_)->size(seq);
+  if (MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->size)
+    result = MRT_SEQ_CLASS(MRT_OBJECT(seq)->class_)->size(seq);
   return result;
 }
 
-MRT_ABSTRACT_CLASS_DEF(MRT_Seq, seq, mrt_value_class())
+MRT_ABSTRACT_CLASS_DEF(MRT_Seq, seq, mrt_object_class())
