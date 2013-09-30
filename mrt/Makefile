@@ -5,6 +5,7 @@ mrt_headers = $(wildcard *.h)
 mrt_objects = $(mrt_sources:.c=.o)
 mrt_cflags  = $(CPPFLAGS) $(CFLAGS) -g -I.. -std=c99 -Wall -Wextra -Werror
 mrt_ldflags = $(LDFLAGS)
+#fixme: -liconv should go on _ldflags
 
 all: libmrt.so
 

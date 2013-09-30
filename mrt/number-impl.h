@@ -2,12 +2,13 @@
 #define MRT_NUMBER_IMPL_H
 
 #include <mrt/number.h>
+#include <mrt/value-impl.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+MRT_BEGIN_CDECLS
 
-typedef struct MRT_NumberClass;
+#define MRT_NUMBER_CLASS(c) ((MRT_NumberClass*)(c))
+
+typedef struct MRT_NumberClass MRT_NumberClass;
 
 struct MRT_Number
 {
@@ -19,8 +20,6 @@ struct MRT_NumberClass
   MRT_ValueClass base_;
 };
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+MRT_END_CDECLS
 
 #endif // MRT_NUMBER_IMPL_H

@@ -28,6 +28,7 @@
 #include <mrt/value.h>
 #include <mrt/memory.h>
 #include <stdarg.h>
+#include <string.h>
 
 MRT_BEGIN_CDECLS
 
@@ -70,54 +71,44 @@ MRT_Value *mrt_value_construct(const MRT_ValueClass *class_ptr,
 
 const MRT_ValueClass *mrt_value_class_register(const MRT_ValueClass *class_ptr);
 
-#define MRT_BEGIN_CLASS_DEF(T, name_, super_)               \
-const MRT_ValueClass * mrt_ ## name_ ## _class (void)       \
-{                                                           \
-  static MRT_ValueClass * value_class_ = NULL;              \
-  if ( value_class_ == NULL) {                              \
-    value_class_ = mrt_new( T ## Class );                   \
-    if ( value_class_ == NULL)                              \
-      return NULL;                                          \
-    value_class_->super = super_ ;                          \
-    value_class_->size = sizeof( T );                       \
-    value_class_->name = #T;                                \
-    if (mrt_value_class_register( value_class_ ) == NULL) { \
-      mrt_free( value_class_ );                             \
-      value_class_ = NULL;                                  \
-      return NULL;                                          \
-    }                                                       \
-  }                                                         \
+#define MRT_BEGIN_CLASS_DEF(T, name_, super_)           \
+const MRT_ValueClass * mrt_ ## name_ ## _class (void)    \
+{                                                       \
+  static bool class_initialized_ = false;               \
+  static T ## Class value_class_;                       \
+  if (!class_initialized_) {                            \
+    memset(&value_class_, 0, sizeof(T ## Class));       \
+    MRT_VALUE_CLASS(&value_class_)->super = super_ ;    \
+    MRT_VALUE_CLASS(&value_class_)->size = sizeof( T ); \
+    MRT_VALUE_CLASS(&value_class_)->name = #T;          \
+    class_initialized_ = true;                          \
+  }                                                     \
   do
 
-#define MRT_SET_FIELD(clsT_, memb_, fn_ptr_)        \
-  do {                                              \
-    clsT_ *cls_temp_ptr__ = (clsT_ *) value_class_; \
-    cls_temp_ptr__->memb_ = fn_ptr_ ;               \
+#define MRT_SET_FIELD(clsT_, memb_, fn_ptr_)         \
+  do {                                               \
+    clsT_ *cls_temp_ptr__ = (clsT_ *) &value_class_; \
+    cls_temp_ptr__->memb_ = fn_ptr_ ;                \
   } while (0)
 
-#define MRT_END_CLASS_DEF \
-  while (0);              \
-  return value_class_ ;   \
+#define MRT_END_CLASS_DEF                \
+  while (0);                             \
+  return MRT_VALUE_CLASS(&value_class_); \
 }
 
-#define MRT_ABSTRACT_CLASS_DEF(T, name_, super_)            \
-const MRT_ValueClass * mrt_ ## name_ ## _class (void)       \
-{                                                           \
-  static MRT_ValueClass * value_class_ = NULL;              \
-  if ( value_class_ == NULL) {                              \
-    value_class_ = mrt_new( T ## Class );                   \
-    if ( value_class_ == NULL)                              \
-      return NULL;                                          \
-    value_class_->super = super_ ;                          \
-    value_class_->size = sizeof( T );                       \
-    value_class_->name = #T;                                \
-    if (mrt_value_class_register( value_class_ ) == NULL) { \
-      mrt_free( value_class_ );                             \
-      value_class_ = NULL;                                  \
-      return NULL;                                          \
-    }                                                       \
-  }                                                         \
-  return value_class_ ;                                     \
+#define MRT_ABSTRACT_CLASS_DEF(T, name_, super_)     \
+const MRT_ValueClass * mrt_ ## name_ ## _class (void) \
+{                                                    \
+  static bool class_initialized_ = false;            \
+  static MRT_ValueClass value_class_;                \
+  if (!class_initialized_) {                         \
+    memset(&value_class_, 0, sizeof(T ## Class));    \
+    value_class_.super = super_ ;                    \
+    value_class_.size = sizeof( T );                 \
+    value_class_.name = #T;                          \
+    class_initialized_ = true;                       \
+  }                                                  \
+  return &value_class_ ;                             \
 }
 
 MRT_END_CDECLS

@@ -29,49 +29,6 @@
 #include <string.h>
 #include <stdio.h>
 
-// FIXME: move type registration to other file and optimize it better
-// since it's used all over the place indirectly.
-#define MRT_MAX_CLASSES 32
-
-static uint32_t next_available_class_id = 0;
-static MRT_ValueClass *registered_classes[MRT_MAX_CLASSES] = { NULL };
-
-static void on_exit_unreg_classes(void)
-{
-  size_t i;
-  for (i = 0; i < MRT_MAX_CLASSES; i++) {
-    if (registered_classes[i]) {
-      mrt_free(registered_classes[i]);
-      registered_classes[i] = NULL;
-    }
-  }
-}
-
-const MRT_ValueClass *mrt_value_class_register(const MRT_ValueClass *class_ptr)
-{
-  uint32_t id;
-
-  if (class_ptr == NULL)
-    return NULL;
-
-  if (next_available_class_id == 0)
-    atexit(on_exit_unreg_classes);
-
-  if (next_available_class_id > MRT_MAX_CLASSES) {
-    MRT_VALUE_CLASS(class_ptr)->type_id = MRT_VALUE_CLASS_INVALID; // eek
-    return NULL;
-  }
-
-  id = next_available_class_id++;
-  registered_classes[id] = MRT_VALUE_CLASS(class_ptr); // eek
-  registered_classes[id]->type_id = id;
-
-  printf("Registered class '%s' (%p) [id:%u]\n", registered_classes[id]->name,
-    registered_classes[id], id);
-
-  return registered_classes[id];
-}
-
 static void mrt_value_destruct(MRT_Value *value)
 {
   bool allocated = (value->flags & MRT_VALUE_FLAG_ALLOCATED);
@@ -99,11 +56,13 @@ MRT_Value *mrt_value_construct(const MRT_ValueClass *class_ptr, MRT_Value *value
     flags |= MRT_VALUE_FLAG_ALLOCATED;
   }
 
-  printf("Allocated instance of '%s' of size '%u'\n",
-         class_ptr->name, class_ptr->size);
+  //printf("Allocated instance of '%s' of size '%u'\n",
+  //       class_ptr->name, class_ptr->size);
 
-  //memset(value_ptr, 0, class_ptr->size);
+  memset(value_ptr, 0, class_ptr->size);
   value_ptr->class_ = class_ptr;
+  value_ptr->ref_count = 1;
+  value_ptr->flags = flags;
 
   if (class_ptr->ctor) {
     va_list ap;
@@ -228,26 +187,9 @@ bool mrt_value_is_instance(const MRT_ValueClass *class_, const MRT_Value *value)
   //cls = mrt_value_classof(value);
   cls = value->class_;
   while ( (cls != class_) && (cls != NULL) ) {
-    MRT_ValueClass *cls_cur = MRT_VALUE_CLASS(cls);
-    MRT_ValueClass *cls_test = MRT_VALUE_CLASS(class_);
-    printf("Class '%s' (%p) != '%s' (%p)\n",
-           cls_cur->name, cls_cur, cls_test->name, cls_test);
     //cls = mrt_value_class_super(cls);
     cls = cls->super;
   }
-
-  if (cls == class_) {
-    MRT_ValueClass *cls_cur = MRT_VALUE_CLASS(cls);
-    MRT_ValueClass *cls_test = MRT_VALUE_CLASS(class_);
-    printf("Class '%s' (%p) == '%s' (%p)\n",
-           cls_cur->name, cls_cur, cls_test->name, cls_test);
-  }
-
-  if (cls == NULL) {
-    printf("Unable to tell is instance\n");
-  }
-
-  printf("-----------------------\n");
 
   return (cls != NULL);
 }

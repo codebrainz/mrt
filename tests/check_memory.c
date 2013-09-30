@@ -96,6 +96,7 @@ void test_mrt_realloc(CuTest *tc)
   chunk2 = mrt_realloc(chunk, size2);
   CuAssertPtrNotNull(tc, chunk2);
   chunk = chunk2;
+  bytes = chunk;
   CuAssertIntEquals(tc, size2, mrt_memsize(chunk));
   size = size2;
 
@@ -205,13 +206,17 @@ void test_mrt_memdup(CuTest *tc)
   mrt_free(chunk2);
 }
 
-CuSuite* mrt_malloc_get_test_suite(void)
+CuSuite* mrt_memory_get_test_suite(void)
 {
-    CuSuite* suite = CuSuiteNew();
-    SUITE_ADD_TEST(suite, test_mrt_set_allocator_custom);
-    SUITE_ADD_TEST(suite, test_mrt_realloc);
-    SUITE_ADD_TEST(suite, test_mrt_memsize);
-    SUITE_ADD_TEST(suite, test_mrt_memfill_range);
-    SUITE_ADD_TEST(suite, test_mrt_memdup);
-    return suite;
+    static CuSuite suite;
+
+    CuSuiteInit(&suite);
+
+    SUITE_ADD_TEST(&suite, test_mrt_set_allocator_custom);
+    SUITE_ADD_TEST(&suite, test_mrt_realloc);
+    SUITE_ADD_TEST(&suite, test_mrt_memsize);
+    SUITE_ADD_TEST(&suite, test_mrt_memfill_range);
+    SUITE_ADD_TEST(&suite, test_mrt_memdup);
+
+    return &suite;
 }

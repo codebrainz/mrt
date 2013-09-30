@@ -39,13 +39,11 @@
 #ifndef MRT_STR_UTILS_H
 #define MRT_STR_UTILS_H
 
+#include <mrt/macros.h>
+#include <mrt/basictypes.h>
 #include <stdarg.h>
-#include <stdbool.h>
-#include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+MRT_BEGIN_CDECLS
 
 /**
  * Duplicate a zero-terminated string.
@@ -95,11 +93,10 @@ char *mrt_strdup_vprintf(const char *fmt, va_list ap);
 /**
  * Gets the number of bytes in a given string.
  *
- * @note This function is safe with respect to passing @c NULL to
- * it as well as flying off the end of the string.
- *
- * @param str The string to measure.
- * @return The number of bytes in the given string.
+ * @param str The zero-terminated string to measure.
+ * @return The number of bytes in the given string, not including the
+ * zero-terminator byte, or returns 0 if the string is empty or
+ * @c NULL is passed in @a str.
  */
 size_t mrt_strlen(const char *str);
 
@@ -156,8 +153,6 @@ char *mrt_strchug(char *str);
  */
 #define mrt_strstrip(str) mrt_strchomp(mrt_strchug(str))
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+MRT_END_CDECLS
 
 #endif // MRT_STR_UTILS_H

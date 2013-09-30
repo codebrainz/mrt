@@ -51,8 +51,6 @@ struct MRT_SeqIterClass
   MRT_SeqIterNextFunc next;
 };
 
-
-
 MRT_END_CDECLS
 
 #endif // MRT_SEQUENCE_ITER_IMPL_H

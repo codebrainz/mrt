@@ -6,7 +6,7 @@
 MRT_BEGIN_CDECLS
 
 #define MRT_NONE(v) ((MRT_None*)(v))
-#define MRT_IS_NONE(v) mrt_value_is_instace(mrt_none_class(), MRT_VALUE(v))
+#define MRT_IS_NONE(v) mrt_value_is_instance(mrt_none_class(), MRT_VALUE(v))
 
 typedef struct MRT_None MRT_None;
 

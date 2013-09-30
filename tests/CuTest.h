@@ -87,6 +87,12 @@ void CuAssertPtrEquals_LineMsg(CuTest* tc,
 #define CuAssertPtrEquals(tc,ex,ac)           CuAssertPtrEquals_LineMsg((tc),__FILE__,__LINE__,NULL,(ex),(ac))
 #define CuAssertPtrEquals_Msg(tc,ms,ex,ac)    CuAssertPtrEquals_LineMsg((tc),__FILE__,__LINE__,(ms),(ex),(ac))
 
+#define CuAssertIntNegative(tc,i) CuAssert_Line((tc), __FILE__, __LINE__, "integer negative failed", (i) < 0)
+#define CuAssertIntPositive(tc,i) CuAssert_Line((tc), __FILE__, __LINE__, "integer positive failed", (i) > 0)
+#define CuAssertIntZero(tc, i)    CuAssert_Line((tc), __FILE__, __LINE__, "integer is zero failed", (i) == 0)
+
+#define CuAssertInt64Equals(tc,ex,ac) CuAssert_Line((tc), __FILE__, __LINE__, "integer 64 equals failed", (ex) == (ac))
+
 #define CuAssertPtrNotNull(tc,p)        CuAssert_Line((tc),__FILE__,__LINE__,"null pointer unexpected",(p != NULL))
 #define CuAssertPtrNotNullMsg(tc,msg,p) CuAssert_Line((tc),__FILE__,__LINE__,(msg),(p != NULL))
 #define CuAssertPtrNull(tc,p)           CuAssert_Line((tc),__FILE__,__LINE__,"null pointer expected",(p == NULL))

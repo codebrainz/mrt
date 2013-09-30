@@ -119,7 +119,7 @@ void mrt_free(void *ptr)
   }
 }
 
-size_t mrt_memsize(void *ptr)
+size_t mrt_memsize(const void *ptr)
 {
   if (!ptr)
     return 0;
@@ -140,13 +140,13 @@ void mrt_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte)
   memset(((uint8_t*)ptr) + start, byte, len);
 }
 
-void *mrt_memdup(void *ptr)
+void *mrt_memdup(const void *ptr)
 {
   void *new_ptr;
   if (!ptr)
     return NULL;
   new_ptr = mrt_malloc(*PTR_TO_HDR(ptr));
   if (new_ptr)
-    memcpy(new_ptr, ptr, *PTR_TO_HDR(ptr));
+    memcpy((uint8_t*)new_ptr, (uint8_t*)ptr, *PTR_TO_HDR(ptr));
   return new_ptr;
 }

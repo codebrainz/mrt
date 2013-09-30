@@ -155,7 +155,7 @@ void mrt_free(void *ptr);
  * `mrt_*()` memory allocation functions.
  * @return The size of the memory chunk or @c NULL if @a ptr is @c NULL.
  */
-size_t mrt_memsize(void *ptr);
+size_t mrt_memsize(const void *ptr);
 
 /**
  * Fill a range of a chunk of memory with a specific byte.
@@ -235,7 +235,7 @@ void mrt_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte);
  * @return The newly allocated duplicate memory that should be freed
  * with mrt_free() when no longer needed.
  */
-void *mrt_memdup(void *ptr);
+void *mrt_memdup(const void *ptr);
 
 MRT_END_CDECLS
 
