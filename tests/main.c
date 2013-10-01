@@ -9,6 +9,7 @@ extern CuSuite* m_boolean_get_test_suite(void);
 extern CuSuite* m_integer_get_test_suite(void);
 extern CuSuite* m_real_get_test_suite(void);
 extern CuSuite* m_string_get_test_suite(void);
+extern CuSuite* m_pointer_get_test_suite(void);
 
 int main()
 {
@@ -23,6 +24,7 @@ int main()
   CuSuiteAddSuite(suite, m_integer_get_test_suite());
   CuSuiteAddSuite(suite, m_real_get_test_suite());
   CuSuiteAddSuite(suite, m_string_get_test_suite());
+  CuSuiteAddSuite(suite, m_pointer_get_test_suite());
 
   CuSuiteRun(suite);
   CuSuiteSummary(suite, output);

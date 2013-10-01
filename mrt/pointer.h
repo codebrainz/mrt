@@ -22,37 +22,27 @@
  * SOFTWARE.
  */
 
-#include <mrt/array-impl.h>
+#ifndef M_POINTER_H
+#define M_POINTER_H
 
-static void m_array_ctor(MObject *obj, va_list ap)
-{
-  MArray *arr = M_ARRAY(obj);
-  (void)ap;
-  arr->data = NULL;
-  arr->size = 0;
-}
+#include <mrt/object.h>
 
-static void m_array_dtor(MObject *obj)
-{
-  MArray *arr = M_ARRAY(obj);
-  uint32_t i;
-  for (i = 0; i < arr->size; i++) {
-    m_object_unref(arr->data[i]);
-    arr->data[i] = NULL;
-  }
-  m_free(arr->data);
-  arr->data = NULL;
-  arr->size = 0;
-}
+M_BEGIN_CDECLS
 
-MObject *m_array_new(void)
-{
-  return m_object_construct(m_array_class(), NULL);
-}
+#define M_POINTER(v) ((MPointer*)(v))
+#define M_IS_POINTER(v) m_object_is_instance(m_pointer_class(), M_OBJECT(v))
 
-M_BEGIN_CLASS_DEF(MArray, array, m_seq_class())
-{
-  M_SET_FIELD(MObjectClass, ctor, m_array_ctor);
-  M_SET_FIELD(MObjectClass, dtor, m_array_dtor);
-}
-M_END_CLASS_DEF
+typedef struct MPointer MPointer;
+
+typedef void* (*MPointerCopyFunc)(const void*);
+typedef void (*MPointerFreeFunc)(void*);
+
+const MObjectClass *m_pointer_class(void);
+
+MObject *m_pointer_new(void *ptr, MPointerCopyFunc copy, MPointerFreeFunc free);
+void *m_pointer_get(MPointer *p);
+void m_pointer_set(MPointer *p, void *ptr);
+
+M_END_CDECLS
+
+#endif // M_POINTER_H

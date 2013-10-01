@@ -23,6 +23,7 @@
  */
 
 #include <mrt/memory.h>
+#include <mrt/bitwise.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -37,7 +38,7 @@ typedef struct
 }
 MAllocator;
 
-typedef size_t MMemHeader;
+typedef uint64_t MMemHeader;
 
 #define PTR_TO_HDR(ptr) (((MMemHeader*)(ptr)) - 1)
 #define HDR_TO_PTR(hdr) ((void*)(((MMemHeader*)(hdr)) + 1))

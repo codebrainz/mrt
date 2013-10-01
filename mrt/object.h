@@ -43,7 +43,7 @@ const MObjectClass *m_object_class(void);
 MObject *m_object_ref(MObject *obj);
 MObject *m_object_ref_sync(MObject *obj);
 MObject *m_object_unref(MObject *obj);
-MObject *m_object_copy(const MObject *obj);
+MObject *m_object_copy(MObject *obj);
 size_t m_object_hash(const MObject *obj);
 int m_object_compare(const MObject *obj1, const MObject *obj2);
 bool m_object_equal(const MObject *obj1, const MObject *obj2);

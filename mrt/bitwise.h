@@ -22,37 +22,28 @@
  * SOFTWARE.
  */
 
-#include <mrt/array-impl.h>
+#ifndef M_BITWISE_H
+#define M_BITWISE_H
 
-static void m_array_ctor(MObject *obj, va_list ap)
-{
-  MArray *arr = M_ARRAY(obj);
-  (void)ap;
-  arr->data = NULL;
-  arr->size = 0;
-}
+#include <mrt/macros.h>
 
-static void m_array_dtor(MObject *obj)
-{
-  MArray *arr = M_ARRAY(obj);
-  uint32_t i;
-  for (i = 0; i < arr->size; i++) {
-    m_object_unref(arr->data[i]);
-    arr->data[i] = NULL;
-  }
-  m_free(arr->data);
-  arr->data = NULL;
-  arr->size = 0;
-}
+M_BEGIN_CDECLS
 
-MObject *m_array_new(void)
-{
-  return m_object_construct(m_array_class(), NULL);
-}
+#define M_LO_BYTE(w)   ((uint8_t)(w))
+#define M_HI_BYTE(w)   ((uint8_t)(0xFF & (uint16_t)((w) >> 8)))
+#define M_LO_WORD(dw)  ((uint16_t)(dw))
+#define M_HI_WORD(dw)  ((uint16_t)(0xFFFF & (uint32_t)((dw) >> 16)))
+#define M_LO_DWORD(qw) ((uint32_t)(qw))
+#define M_HI_DWORD(qw) ((uint32_t)(0xFFFFFFFF & (uint64_t)((qw) >> 32)))
 
-M_BEGIN_CLASS_DEF(MArray, array, m_seq_class())
-{
-  M_SET_FIELD(MObjectClass, ctor, m_array_ctor);
-  M_SET_FIELD(MObjectClass, dtor, m_array_dtor);
-}
-M_END_CLASS_DEF
+#define M_MAKE_WORD(h,l)  (((uint16_t)((uint16_t)(h) << 8)) | (uint16_t)((uint8_t)(l)))
+#define M_MAKE_DWORD(h,l) (((uint32_t)((uint32_t)(h) << 16)) | (uint32_t)((uint16_t)(l)))
+#define M_MAKE_QWORD(h,l) (((uint64_t)((uint64_t)(h) << 32)) | (uint64_t)((uint32_t)(l)))
+
+#define M_BIT_CLEAR(data, bit)  ((data) & ~(bit))
+#define M_BIT_SET(data, bit)    ((data) | (bit))
+#define M_BIT_TOGGLE(data, bit) ((data) ^ (bit))
+
+M_END_CDECLS
+
+#endif // M_BITWISE_H

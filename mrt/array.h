@@ -25,11 +25,18 @@
 #ifndef M_ARRAY_H
 #define M_ARRAY_H
 
-#include <mrt/macros.h>
+#include <mrt/sequence.h>
 
 M_BEGIN_CDECLS
 
+#define M_ARRAY(v) ((MArray*)(v))
+#define M_IS_ARRAY(v) m_object_is_instance(m_array_class(), M_OBJECT(v))
 
+typedef struct MArray MArray;
+
+const MObjectClass *m_array_class(void);
+
+MObject *m_array_new(void);
 
 M_END_CDECLS
 

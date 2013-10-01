@@ -148,19 +148,16 @@ MObject *m_object_unref(MObject *obj)
 /**
  * Make a copy of the obj.
  *
- * The type of of obj determines which type of copy takes place.
- * In the case of composite objs, that is those containing other
- * MObjects, a deep referencing of all children will take place.
- * In the case of basic types, the obj's payload will be directly
- * copied.
- *
- * @param obj The obj to copy.
- * @return A newly allocated MObject with a reference count of 1.
+ * @param obj The obj to copy (may be modified/referenced).
+ * @return A new MObject that is a copy of the @a obj, @c NULL if the
+ * class doesn't support the copy operation.
  */
-MObject *m_object_copy(const MObject *obj)
+MObject *m_object_copy(MObject *obj)
 {
   m_return_val_if_fail(M_IS_OBJECT(obj), NULL);
-  return NULL;
+  if (obj->class_->copy)
+    return obj->class_->copy(obj);
+  return m_object_ref(obj);
 }
 
 size_t m_object_hash(const MObject *obj)

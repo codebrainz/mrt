@@ -22,37 +22,30 @@
  * SOFTWARE.
  */
 
-#include <mrt/array-impl.h>
+#ifndef M_ARRAY_IMPL_H
+#define M_ARRAY_IMPL_H
 
-static void m_array_ctor(MObject *obj, va_list ap)
-{
-  MArray *arr = M_ARRAY(obj);
-  (void)ap;
-  arr->data = NULL;
-  arr->size = 0;
-}
+#include <mrt/array.h>
+#include <mrt/sequence-impl.h>
 
-static void m_array_dtor(MObject *obj)
-{
-  MArray *arr = M_ARRAY(obj);
-  uint32_t i;
-  for (i = 0; i < arr->size; i++) {
-    m_object_unref(arr->data[i]);
-    arr->data[i] = NULL;
-  }
-  m_free(arr->data);
-  arr->data = NULL;
-  arr->size = 0;
-}
+M_BEGIN_CDECLS
 
-MObject *m_array_new(void)
-{
-  return m_object_construct(m_array_class(), NULL);
-}
+#define M_ARRAY_CLASS(c) ((MArrayClass*)(c))
 
-M_BEGIN_CLASS_DEF(MArray, array, m_seq_class())
+typedef struct MArrayClass MArrayClass;
+
+struct MArray
 {
-  M_SET_FIELD(MObjectClass, ctor, m_array_ctor);
-  M_SET_FIELD(MObjectClass, dtor, m_array_dtor);
-}
-M_END_CLASS_DEF
+  MSeq base_;
+  MObject **data;
+  uint32_t size;
+};
+
+struct MArrayClass
+{
+  MSeqClass base_;
+};
+
+M_END_CDECLS
+
+#endif // M_ARRAY_IMPL_H

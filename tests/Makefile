@@ -5,7 +5,7 @@ mrt_ldflags = $(LDFLAGS) -L../mrt -lmrt
 all: run_tests
 
 checks = check_memory.o check_strutils.o check_none.o check_boolean.o \
-	check_integer.o check_real.o check_string.o check_list.o
+	check_integer.o check_real.o check_string.o check_pointer.o check_list.o
 
 run_tests: CuTest.o main.o $(checks)
 	$(CC) $(mrt_cflags) -o $@ $^ $(mrt_ldflags)
@@ -35,6 +35,9 @@ check_real.o: check_real.c
 	$(CC) -c -fPIC $(mrt_cflags) -o $@ $<
 
 check_string.o: check_string.c
+	$(CC) -c -fPIC $(mrt_cflags) -o $@ $<
+
+check_pointer.o: check_pointer.c
 	$(CC) -c -fPIC $(mrt_cflags) -o $@ $<
 
 check_list.o: check_list.c

@@ -48,7 +48,7 @@ struct MObject
 
 typedef void (*MObjectConstructFunc)(MObject*, va_list);
 typedef void (*MObjectDestructFunc)(MObject*);
-typedef MObject (*MObjectCopyFunc)(const MObject*);
+typedef MObject* (*MObjectCopyFunc)(const MObject*);
 typedef size_t (*MObjectHashFunc)(const MObject*);
 typedef int (*MObjectCompareFunc)(const MObject*, const MObject*);
 typedef bool (*MObjectEqualFunc)(const MObject*, const MObject*);
@@ -78,44 +78,44 @@ MObject *m_object_construct(const MObjectClass *class_ptr,
 
 const MObjectClass *m_object_class_register(const MObjectClass *class_ptr);
 
-#define M_BEGIN_CLASS_DEF(T, name_, super_)            \
-const MObjectClass * m_ ## name_ ## _class (void)   \
-{                                                        \
-  static bool class_initialized_ = false;                \
-  static T ## Class obj_class_;                        \
-  if (!class_initialized_) {                             \
-    memset(&obj_class_, 0, sizeof(T ## Class));        \
+#define M_BEGIN_CLASS_DEF(T, name_, super_)          \
+const MObjectClass * m_ ## name_ ## _class (void)    \
+{                                                    \
+  static bool class_initialized_ = false;            \
+  static T ## Class obj_class_;                      \
+  if (!class_initialized_) {                         \
+    memset(&obj_class_, 0, sizeof(T ## Class));      \
     M_OBJECT_CLASS(&obj_class_)->super = super_ ;    \
     M_OBJECT_CLASS(&obj_class_)->size = sizeof( T ); \
     M_OBJECT_CLASS(&obj_class_)->name = #T;          \
-    class_initialized_ = true;                           \
-  }                                                      \
+    class_initialized_ = true;                       \
+  }                                                  \
   do
 
 #define M_SET_FIELD(clsT_, memb_, fn_ptr_)         \
-  do {                                               \
+  do {                                             \
     clsT_ *cls_temp_ptr__ = (clsT_ *) &obj_class_; \
-    cls_temp_ptr__->memb_ = fn_ptr_ ;                \
+    cls_temp_ptr__->memb_ = fn_ptr_ ;              \
   } while (0)
 
-#define M_END_CLASS_DEF                 \
-  while (0);                              \
+#define M_END_CLASS_DEF               \
+  while (0);                          \
   return M_OBJECT_CLASS(&obj_class_); \
 }
 
-#define M_ABSTRACT_CLASS_DEF(T, name_, super_)       \
+#define M_ABSTRACT_CLASS_DEF(T, name_, super_)    \
 const MObjectClass * m_ ## name_ ## _class (void) \
-{                                                      \
-  static bool class_initialized_ = false;              \
+{                                                 \
+  static bool class_initialized_ = false;         \
   static MObjectClass obj_class_;                 \
-  if (!class_initialized_) {                           \
-    memset(&obj_class_, 0, sizeof(T ## Class));      \
-    obj_class_.super = super_ ;                      \
-    obj_class_.size = sizeof( T );                   \
-    obj_class_.name = #T;                            \
-    class_initialized_ = true;                         \
-  }                                                    \
-  return &obj_class_ ;                               \
+  if (!class_initialized_) {                      \
+    memset(&obj_class_, 0, sizeof(T ## Class));   \
+    obj_class_.super = super_ ;                   \
+    obj_class_.size = sizeof( T );                \
+    obj_class_.name = #T;                         \
+    class_initialized_ = true;                    \
+  }                                               \
+  return &obj_class_ ;                            \
 }
 
 M_END_CDECLS

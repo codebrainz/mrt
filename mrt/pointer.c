@@ -22,37 +22,53 @@
  * SOFTWARE.
  */
 
-#include <mrt/array-impl.h>
+#include <mrt/pointer-impl.h>
 
-static void m_array_ctor(MObject *obj, va_list ap)
+static void m_pointer_ctor(MObject *obj, va_list ap)
 {
-  MArray *arr = M_ARRAY(obj);
-  (void)ap;
-  arr->data = NULL;
-  arr->size = 0;
+  MPointer *p = M_POINTER(obj);
+  p->ptr = va_arg(ap, void*);
+  p->copy = va_arg(ap, MPointerCopyFunc);
+  p->free = va_arg(ap, MPointerFreeFunc);
 }
 
-static void m_array_dtor(MObject *obj)
+static void m_pointer_dtor(MObject *obj)
 {
-  MArray *arr = M_ARRAY(obj);
-  uint32_t i;
-  for (i = 0; i < arr->size; i++) {
-    m_object_unref(arr->data[i]);
-    arr->data[i] = NULL;
-  }
-  m_free(arr->data);
-  arr->data = NULL;
-  arr->size = 0;
+  MPointer *p = M_POINTER(obj);
+  if (p->free)
+    p->free(p->ptr);
 }
 
-MObject *m_array_new(void)
+static MObject *m_pointer_copy(const MObject *obj)
 {
-  return m_object_construct(m_array_class(), NULL);
+  MPointer *p = M_POINTER(obj);
+  MPointer *np = M_POINTER(m_pointer_new(p->ptr, p->copy, p->free));
+  if (p->copy)
+    np->ptr = p->copy(p->ptr);
+  return M_OBJECT(np);
 }
 
-M_BEGIN_CLASS_DEF(MArray, array, m_seq_class())
+MObject *m_pointer_new(void *ptr, MPointerCopyFunc copy, MPointerFreeFunc free)
 {
-  M_SET_FIELD(MObjectClass, ctor, m_array_ctor);
-  M_SET_FIELD(MObjectClass, dtor, m_array_dtor);
+  return m_object_construct(m_pointer_class(), NULL, ptr, copy, free);
+}
+
+void *m_pointer_get(MPointer *p)
+{
+  m_return_val_if_fail(M_IS_POINTER(p), NULL);
+  return p->ptr;
+}
+
+void m_pointer_set(MPointer *p, void *ptr)
+{
+  m_return_if_fail(M_IS_POINTER(p));
+  p->ptr = ptr;
+}
+
+M_BEGIN_CLASS_DEF(MPointer, pointer, m_object_class())
+{
+  M_SET_FIELD(MObjectClass, ctor, m_pointer_ctor);
+  M_SET_FIELD(MObjectClass, dtor, m_pointer_dtor);
+  M_SET_FIELD(MObjectClass, copy, m_pointer_copy);
 }
 M_END_CLASS_DEF
