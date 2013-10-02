@@ -214,7 +214,7 @@ void m_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte);
  * m_free() when no longer needed or @c NULL if no more memory
  * is available.
  */
-#define m_calloc(n, sz) m_malloc((n)*(sz))
+void *m_calloc(size_t n, size_t sz);
 
 /**
  * Alias of m_malloc() for allocating a type.
@@ -236,6 +236,11 @@ void m_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte);
  * with m_free() when no longer needed.
  */
 void *m_memdup(const void *ptr);
+
+// For use by objpool
+void m_alloc_object(size_t sz);
+bool m_mem_is_object(void *ptr);
+void m_mem_set_is_object(void *ptr, bool is_object);
 
 M_END_CDECLS
 

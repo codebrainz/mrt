@@ -27,9 +27,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef NDEBUG
-# include <stdio.h>
-#endif
+// Undefine to disable memory sanity checks
+#define MEM_CHECKS 1
+
+// Undefine to not zero-out memory (not recommended)
+#define ZERO_MEMORY 1
 
 typedef struct
 {
@@ -38,18 +40,48 @@ typedef struct
 }
 MAllocator;
 
-typedef uint64_t MMemHeader;
-
-#define PTR_TO_HDR(ptr) (((MMemHeader*)(ptr)) - 1)
-#define HDR_TO_PTR(hdr) ((void*)(((MMemHeader*)(hdr)) + 1))
-
 #define M_DEFAULT_REALLOC realloc
-#define M_DEFAULT_FREE free
+#define M_DEFAULT_FREE    free
 
 static MAllocator m_allocator = {
   M_DEFAULT_REALLOC,
   M_DEFAULT_FREE
 };
+
+#define MEM_FLAG_NONE   0x00
+#define MEM_FLAG_OBJECT 0x01
+
+typedef struct MemHeader
+{
+  uint32_t size;
+  uint16_t magic;
+  uint8_t flags;
+  uint8_t reserved_;
+}
+MemHeader;
+
+#define MEM_TO_HDR(mem)    ((MemHeader*)(mem)-1)
+#define HDR_TO_MEM(hdr)    ((void*)((MemHeader*)(hdr)+1))
+#define MEM_HDR_SIZE(mem)  MEM_TO_HDR(mem)->size
+#define MEM_HDR_FLAGS(mem) MEM_TO_HDR(mem)->flags
+#define MEM_HDR_MAGIC(mem) MEM_TO_HDR(mem)->magic
+#define MEM_VALID(mem)     (MEM_TO_HDR(mem)->magic == MEM_HDR_MAGIC)
+#define MEM_OVERHEAD       (sizeof(MemHeader))
+
+#if defined(MEM_CHECKS)
+# include <stdio.h>
+# define MEM_HDR_MAGIC      0xA55A
+# define MEM_CHECK(mem)                                             \
+  do {                                                              \
+    if (!MEM_VALID(mem)) {                                          \
+      fprintf(stderr, __FILE__ ":%d: memory corruptiond detected, " \
+              "aborting.\n", __LINE__);                             \
+      abort();                                                      \
+    }                                                               \
+  } while(0)
+#else
+# define MEM_CHECK(mem) do { } while(0)
+#endif
 
 bool m_set_allocator(MAllocatorReallocFunc realloc_fn,
   MAllocationFreeFunc free_fn)
@@ -76,8 +108,8 @@ bool m_set_allocator(MAllocatorReallocFunc realloc_fn,
 void *m_realloc(void *ptr, size_t sz)
 {
   size_t old_sz;
-  MMemHeader *hdr;
   void *temp;
+  MemHeader *hdr;
 
   // Resize to 0 means free()
   if (sz == 0) {
@@ -85,46 +117,57 @@ void *m_realloc(void *ptr, size_t sz)
     return NULL;
   }
 
-  // If ptr is NULL it's just like malloc()
   if (ptr != NULL) {
-    hdr = PTR_TO_HDR(ptr);
-    old_sz = *hdr;
+    MEM_CHECK(ptr);
+    hdr = MEM_TO_HDR(ptr);
+    old_sz = hdr->size;
   } else {
     hdr = NULL;
     old_sz = 0;
   }
 
-  // Bail out if can't allocate sz (plus header size)
-  temp = m_allocator.realloc(hdr, sz + sizeof(MMemHeader));
+  temp = m_allocator.realloc(hdr, sz + MEM_OVERHEAD);
   if (temp == NULL)
     return NULL;
 
   hdr = temp;
-  *hdr = sz;
-  ptr = HDR_TO_PTR(hdr);
 
+  hdr->size = sz;
+  ptr = HDR_TO_MEM(hdr);
+
+#ifdef ZERO_MEMORY
   // Clear out additional bytes added, if any
   if (sz > old_sz)
     m_memclear_range(ptr, old_sz, (sz - old_sz));
+#endif
 
-  //printf("Reallocated '%lu' bytes to '%lu' bytes\n", old_sz, sz);
+  MEM_CHECK(ptr);
 
   return ptr;
 }
 
 void m_free(void *ptr)
 {
-  if (ptr) {
-    m_memclear(ptr);
-    m_allocator.free(PTR_TO_HDR(ptr));
-  }
+  if (!ptr)
+    return;
+
+  MEM_CHECK(ptr);
+
+#ifdef ZERO_MEMORY
+  memset(MEM_TO_HDR(ptr), 0, MEM_HDR_SIZE(ptr) + MEM_OVERHEAD);
+#endif
+
+  m_allocator.free(MEM_TO_HDR(ptr));
 }
 
 size_t m_memsize(const void *ptr)
 {
   if (!ptr)
     return 0;
-  return *PTR_TO_HDR(ptr);
+
+  MEM_CHECK(ptr);
+
+  return MEM_HDR_SIZE(ptr);
 }
 
 void m_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte)
@@ -150,4 +193,42 @@ void *m_memdup(const void *ptr)
   if (new_ptr)
     memcpy((uint8_t*)new_ptr, (uint8_t*)ptr, *PTR_TO_HDR(ptr));
   return new_ptr;
+}
+
+void *m_calloc(size_t n, size_t sz)
+{
+  size_t size = n * sz;
+#if !defined(ZERO_MEMORY)
+  void *ptr = m_malloc(size);
+  memset(ptr, 0, size);
+  return ptr;
+#else
+  return m_malloc(size);
+#endif
+}
+
+void m_alloc_object(size_t sz)
+{
+  void *ptr = m_calloc(1, sz);
+  if (ptr)
+    MEM_HDR_FLAGS(ptr) |= MEM_FLAG_OBJECT;
+}
+
+bool m_mem_is_object(void *ptr)
+{
+  if (!ptr)
+    return false;
+  MEM_CHECK(ptr);
+  return MEM_HDR_SIZE(ptr);
+}
+
+void m_mem_set_is_object(void *ptr, bool is_object)
+{
+  if (!ptr)
+    return;
+  MEM_CHECK(ptr);
+  if (is_object)
+    MEM_HDR_FLAGS(ptr) |= MEM_FLAG_OBJECT;
+  else
+    MEM_HDR_FLAGS(ptr) &= ~MEM_FLAG_OBJECT;
 }
