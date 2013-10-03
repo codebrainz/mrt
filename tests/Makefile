@@ -1,6 +1,6 @@
 
 mrt_cflags  = $(CPPFLAGS) $(CFLAGS) -g -I.. -std=c99 -Wall -Wextra -Werror
-mrt_ldflags = $(LDFLAGS) -L../mrt -lmrt
+mrt_ldflags = $(LDFLAGS) -L../mlib -lmlib
 
 all: run_tests
 

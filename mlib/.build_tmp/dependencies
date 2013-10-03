@@ -1,0 +1,71 @@
+array.o: array.c ../mlib/array-impl.h ../mlib/array.h ../mlib/sequence.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/sequence-iter.h ../mlib/sequence-impl.h ../mlib/object-impl.h \
+ ../mlib/memory.h
+boolean.o: boolean.c ../mlib/boolean-impl.h ../mlib/boolean.h \
+ ../mlib/number.h ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/number-impl.h ../mlib/object-impl.h ../mlib/memory.h
+char.o: char.c ../mlib/char-impl.h ../mlib/char.h ../mlib/number.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/number-impl.h ../mlib/object-impl.h ../mlib/memory.h
+file.o: file.c
+hash-bucket.o: hash-bucket.c ../mlib/hash-bucket-impl.h
+hash-link.o: hash-link.c ../mlib/hash-link-impl.h
+hash-table.o: hash-table.c ../mlib/hash-table-impl.h
+integer.o: integer.c ../mlib/integer-impl.h ../mlib/integer.h \
+ ../mlib/number.h ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/number-impl.h ../mlib/object-impl.h ../mlib/memory.h
+list.o: list.c ../mlib/list-impl.h ../mlib/list.h ../mlib/sequence.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/sequence-iter.h ../mlib/sequence-impl.h ../mlib/object-impl.h \
+ ../mlib/memory.h ../mlib/sequence-iter-impl.h ../mlib/list-link-impl.h \
+ ../mlib/list-iter-impl.h ../mlib/list-iter.h
+list-iter.o: list-iter.c ../mlib/list-iter-impl.h ../mlib/object-impl.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h ../mlib/memory.h \
+ ../mlib/sequence-iter-impl.h ../mlib/sequence-iter.h ../mlib/sequence.h \
+ ../mlib/list-iter.h ../mlib/list-link-impl.h ../mlib/list.h \
+ ../mlib/sequence-impl.h
+list-link.o: list-link.c ../mlib/list-link-impl.h ../mlib/object-impl.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h ../mlib/memory.h
+memory.o: memory.c ../mlib/memory.h ../mlib/macros.h ../mlib/basictypes.h
+mutex.o: mutex.c
+none.o: none.c ../mlib/none-impl.h ../mlib/none.h ../mlib/object.h \
+ ../mlib/macros.h ../mlib/basictypes.h ../mlib/object-impl.h \
+ ../mlib/memory.h
+number.o: number.c ../mlib/number-impl.h ../mlib/number.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/object-impl.h ../mlib/memory.h
+object.o: object.c ../mlib/object-impl.h ../mlib/object.h \
+ ../mlib/macros.h ../mlib/basictypes.h ../mlib/memory.h ../mlib/atomic.h
+pointer.o: pointer.c ../mlib/pointer-impl.h ../mlib/pointer.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/object-impl.h ../mlib/memory.h
+process.o: process.c ../mlib/process-impl.h ../mlib/process.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h ../mlib/string.h \
+ ../mlib/sequence.h ../mlib/sequence-iter.h ../mlib/object-impl.h \
+ ../mlib/memory.h
+real.o: real.c ../mlib/real-impl.h ../mlib/real.h ../mlib/number.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h \
+ ../mlib/number-impl.h ../mlib/object-impl.h ../mlib/memory.h
+sequence.o: sequence.c ../mlib/sequence-impl.h ../mlib/object-impl.h \
+ ../mlib/object.h ../mlib/macros.h ../mlib/basictypes.h ../mlib/memory.h \
+ ../mlib/sequence.h ../mlib/sequence-iter.h
+sequence-iter.o: sequence-iter.c ../mlib/sequence-iter-impl.h \
+ ../mlib/macros.h ../mlib/sequence-iter.h ../mlib/object.h \
+ ../mlib/basictypes.h ../mlib/sequence.h ../mlib/object-impl.h \
+ ../mlib/memory.h
+string.o: string.c ../mlib/string-impl.h ../mlib/string.h \
+ ../mlib/sequence.h ../mlib/object.h ../mlib/macros.h \
+ ../mlib/basictypes.h ../mlib/sequence-iter.h ../mlib/sequence-impl.h \
+ ../mlib/object-impl.h ../mlib/memory.h ../mlib/strutils.h \
+ ../mlib/string-iter-impl.h ../mlib/string-iter.h \
+ ../mlib/sequence-iter-impl.h ../mlib/char.h ../mlib/number.h
+string-iter.o: string-iter.c ../mlib/string-iter-impl.h ../mlib/string.h \
+ ../mlib/sequence.h ../mlib/object.h ../mlib/macros.h \
+ ../mlib/basictypes.h ../mlib/sequence-iter.h ../mlib/string-iter.h \
+ ../mlib/sequence-iter-impl.h ../mlib/object-impl.h ../mlib/memory.h \
+ ../mlib/string-impl.h ../mlib/sequence-impl.h ../mlib/char.h \
+ ../mlib/number.h
+strutils.o: strutils.c ../mlib/strutils.h ../mlib/macros.h \
+ ../mlib/basictypes.h ../mlib/memory.h
+utils.o: utils.c ../mlib/utils.h ../mlib/macros.h ../mlib/basictypes.h

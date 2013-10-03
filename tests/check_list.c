@@ -1,5 +1,5 @@
-#include <mrt/sequence.h>
-#include <mrt/list.h>
+#include <mlib/sequence.h>
+#include <mlib/list.h>
 #include "CuTest.h"
 
 // Boilerplate to use sequence tests with the list

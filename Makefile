@@ -1,8 +1,8 @@
 
 all:
-	make -C mrt
+	make -C mlib
 	make -C tests
 
 clean:
-	make -C mrt clean
+	make -C mlib clean
 	make -C tests clean

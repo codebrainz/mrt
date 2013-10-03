@@ -1,4 +1,4 @@
-#include <mrt/integer.h>
+#include <mlib/integer.h>
 #include "CuTest.h"
 
 void test_m_integer(CuTest *tc)

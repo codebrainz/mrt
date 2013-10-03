@@ -1,5 +1,5 @@
-#include <mrt/string.h>
-#include <mrt/strutils.h>
+#include <mlib/string.h>
+#include <mlib/strutils.h>
 #include "CuTest.h"
 
 void test_m_string(CuTest *tc)
