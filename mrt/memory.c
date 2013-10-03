@@ -23,7 +23,6 @@
  */
 
 #include <mrt/memory.h>
-#include <mrt/bitwise.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -64,13 +63,12 @@ MemHeader;
 #define HDR_TO_MEM(hdr)    ((void*)((MemHeader*)(hdr)+1))
 #define MEM_HDR_SIZE(mem)  MEM_TO_HDR(mem)->size
 #define MEM_HDR_FLAGS(mem) MEM_TO_HDR(mem)->flags
-#define MEM_HDR_MAGIC(mem) MEM_TO_HDR(mem)->magic
+#define MEM_HDR_MAGIC      0xA55A
 #define MEM_VALID(mem)     (MEM_TO_HDR(mem)->magic == MEM_HDR_MAGIC)
 #define MEM_OVERHEAD       (sizeof(MemHeader))
 
 #if defined(MEM_CHECKS)
 # include <stdio.h>
-# define MEM_HDR_MAGIC      0xA55A
 # define MEM_CHECK(mem)                                             \
   do {                                                              \
     if (!MEM_VALID(mem)) {                                          \
@@ -131,8 +129,9 @@ void *m_realloc(void *ptr, size_t sz)
     return NULL;
 
   hdr = temp;
-
   hdr->size = sz;
+  if (ptr == NULL)
+    hdr->magic = MEM_HDR_MAGIC;
   ptr = HDR_TO_MEM(hdr);
 
 #ifdef ZERO_MEMORY
@@ -175,7 +174,7 @@ void m_memfill_range(void *ptr, size_t start, size_t len, uint8_t byte)
   size_t mem_size;
   if (!ptr)
     return;
-  mem_size = *PTR_TO_HDR(ptr);
+  mem_size = MEM_HDR_SIZE(ptr);
   if (len == (size_t)-1)
     len = mem_size - start;
   // Safety bounds checks
@@ -189,9 +188,9 @@ void *m_memdup(const void *ptr)
   void *new_ptr;
   if (!ptr)
     return NULL;
-  new_ptr = m_malloc(*PTR_TO_HDR(ptr));
+  new_ptr = m_malloc(MEM_HDR_SIZE(ptr));
   if (new_ptr)
-    memcpy((uint8_t*)new_ptr, (uint8_t*)ptr, *PTR_TO_HDR(ptr));
+    memcpy((uint8_t*)new_ptr, (uint8_t*)ptr, MEM_HDR_SIZE(ptr));
   return new_ptr;
 }
 
